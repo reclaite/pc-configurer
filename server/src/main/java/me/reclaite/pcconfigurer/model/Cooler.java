@@ -1,0 +1,19 @@
+package me.reclaite.pcconfigurer.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.Data;
+
+@Entity
+@Data
+public class Cooler {
+    
+    @Id
+    private Long id;
+    
+    private String name;
+    
+    private Double price;
+    
+    
+}
