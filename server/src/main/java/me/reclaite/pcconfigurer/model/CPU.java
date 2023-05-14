@@ -19,4 +19,8 @@ public class CPU {
     
     private String socket;
     
+    private int cores;
+    
+    private int threads;
+    
 }

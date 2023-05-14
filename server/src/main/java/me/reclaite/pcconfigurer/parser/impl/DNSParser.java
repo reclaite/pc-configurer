@@ -24,12 +24,12 @@ public class DNSParser extends Parser {
         
         String url = "https://www.dns-shop.ru/search/?q=" + productName.replace(" ", "+");
         try {
-            Document doc = Jsoup.connect(url).get();
-            Elements selectedElements = doc.select("div.product");
+            Document doc = Jsoup.connect(url).followRedirects(true).get();
+            Elements selectedElements = doc.body().select("div.catalog-product");
             
             for (Element product : selectedElements) {
-                String title = product.select("div.title").text();
-                String link = "https://www.dns-shop.ru" + product.select("a").attr("href");
+                String title = product.select("a.catalog-product__name.span").text();
+                String link = "https://www.dns-shop.ru" + product.select("a.catalog-product__name").attr("href");
                 products.put(title, link);
             }
             

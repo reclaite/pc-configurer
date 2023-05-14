@@ -1,8 +1,8 @@
 package me.reclaite.pcconfigurer.controller;
 
+import lombok.RequiredArgsConstructor;
 import me.reclaite.pcconfigurer.model.CPU;
-import me.reclaite.pcconfigurer.repository.CPURepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import me.reclaite.pcconfigurer.service.CPUService;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,40 +18,38 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cpus")
+@RequiredArgsConstructor
 public class CPUController {
-    @Autowired
-    private CPURepository cpuRepository;
+    
+    private final CPUService cpuService;
     
     @GetMapping
     public List<CPU> getAllCPUs() {
-        return cpuRepository.findAll();
+        return cpuService.getCpuRepository().findAll();
     }
     
     @GetMapping("/{id}")
     public CPU getCPUById(@PathVariable Long id) {
-        return cpuRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("CPU not found with id " + id));
+        return cpuService.getCpuRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("CPU not found with id " + id));
     }
     
     @PostMapping
     public CPU createCPU(@RequestBody CPU cpu) {
-        return cpuRepository.save(cpu);
+        return cpuService.getCpuRepository().save(cpu);
     }
     
     @PutMapping("/{id}")
     public CPU updateCPU(@PathVariable Long id, @RequestBody CPU cpuDetails) {
-        CPU cpu = cpuRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("CPU not found with id " + id));
-        
-        cpu.setName(cpuDetails.getName());
-        cpu.setPrice(cpuDetails.getPrice());
-        cpu.setSocket(cpuDetails.getSocket());
-        
-        return cpuRepository.save(cpu);
+        return cpuService.updateCPU(id, cpuDetails);
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCPU(@PathVariable Long id) {
-        CPU cpu = cpuRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("CPU not found with id " + id));
-        cpuRepository.delete(cpu);
+        try {
+            cpuService.deleteCPU(id);
+        } catch (ResourceNotFoundException exception) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok().build();
     }
 }

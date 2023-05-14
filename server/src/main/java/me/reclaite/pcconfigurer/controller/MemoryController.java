@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cpus")
+@RequestMapping("/memory")
 public class MemoryController {
 
     @Autowired
@@ -32,7 +32,7 @@ public class MemoryController {
     }
 
     @PutMapping("/{id}")
-    public Memory updateCPU(@PathVariable Long id, @RequestBody Memory memoryDetails) {
+    public Memory updateMemory(@PathVariable Long id, @RequestBody Memory memoryDetails) {
         Memory memory = memoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Memory not found with id " + id));
 
         memory.setName(memoryDetails.getName());
