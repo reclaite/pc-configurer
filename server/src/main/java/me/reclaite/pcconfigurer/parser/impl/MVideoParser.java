@@ -12,47 +12,46 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DNSParser extends Parser {
-    
-    public DNSParser(ParserType parserType) {
+public class MVideoParser extends Parser {
+
+    public MVideoParser(ParserType parserType) {
         super(parserType);
     }
-    
+
     @Override
     public Map<String, String> getMatchedProducts(String productName) {
-        HashMap<String, String> products = new HashMap<>();
-        
-        String url = "https://www.dns-shop.ru/search/?q=" + productName.replace(" ", "+");
+        Map<String, String> products = new HashMap<>();
         try {
+            String url = "https://www.mvideo.ru/product-list-page?q=" + productName.replace(" ", "+");
             Document doc = Jsoup.connect(url).get();
-            Elements selectedElements = doc.select("div.product");
-            
-            for (Element product : selectedElements) {
-                String title = product.select("div.title").text();
-                String link = "https://www.dns-shop.ru" + product.select("a").attr("href");
+            Elements matchedProducts = doc.select("a.product-title__text.product-title--clamp");
+
+            for (Element product : matchedProducts) {
+                String title = product.text();
+                String link = "https://www.mvideo.ru" + product.attr("href");
                 products.put(title, link);
             }
-            
         } catch (IOException exception) {
             return null;
         }
         return products;
     }
-    
+
     @Override
     public ParsedProductInfo getProductInfo(String productUrl) {
         try {
-            Document doc = Jsoup.connect(productUrl).get();
-            
-            String title = doc.select("div.product-card-top__name").text();
-            String price = doc.select("div.product-buy__price").text();
-            
+            String url = "https://www.mvideo.ru/products/materinskaya-plata-msi-h510m-a-pro-30061076";
+            Document doc = Jsoup.connect(url).get();
+
+            String title = doc.select("h1.title").text();
+            String price = doc.select("div.price__main-value").text();
+
             price = price
-                .replace("₽", "")
-                .replace(" ", "");
-            
+                    .replace("₽", "")
+                    .replace(" ", "");
+
             return new ParsedProductInfo(title, Double.parseDouble(price));
-        } catch (IOException ignored) {
+        } catch (IOException exception) {
             return new ParsedProductInfo("%Error%", 0D);
         }
     }

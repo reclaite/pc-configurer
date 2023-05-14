@@ -19,7 +19,7 @@ public class Memory {
     
     private Integer capacity;
     
-    private String type;
+    private MemoryType type;
     
     private Integer speed;
     

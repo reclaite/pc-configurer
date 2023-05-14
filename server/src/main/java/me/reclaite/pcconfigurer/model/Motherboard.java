@@ -27,6 +27,8 @@ public class Motherboard {
     
     private Integer ramSlots;
     
+    private MemoryType supportedType;
+    
     @ElementCollection
     @CollectionTable(name = "motherboard_storage_interfaces", joinColumns = @JoinColumn(name = "motherboard_id"))
     @Column(name = "interface")
