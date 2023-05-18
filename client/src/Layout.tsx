@@ -6,6 +6,8 @@ import Home from "./component/Home";
 import Footer from "./component/Footer";
 import Wrapper from "./component/Wrapper";
 import NotFound from "./component/NotFoundPage";
+import AdminPage from "./component/admin/AdminPage";
+import ProductListPage from "./component/ProductListPage";
 
 const Layout: React.FC = () => {
     return (
@@ -15,6 +17,8 @@ const Layout: React.FC = () => {
                 <Routes>
                     <Route path="/" Component={Home}/>
                     <Route path="/about" Component={AboutPage}/>
+                    <Route path="/admin" Component={AdminPage}/>
+                    <Route path="/products/:category" Component={ProductListPage}/>
                     <Route path="*" Component={NotFound}/>
                 </Routes>
             </Wrapper>

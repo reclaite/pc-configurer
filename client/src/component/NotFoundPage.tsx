@@ -6,7 +6,6 @@ const NotFound = () => {
         <OuterContainer>
             <h1>Страница не найдена</h1>
             <p>Извините, запрашиваемая страница не найдена.</p>
-
         </OuterContainer>
     );
 };
