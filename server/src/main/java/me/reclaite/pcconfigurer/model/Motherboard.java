@@ -1,37 +1,37 @@
 package me.reclaite.pcconfigurer.model;
 
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Motherboard {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String name;
-    
-    private Double price;
+public class Motherboard extends Product {
     
     private String socket;
     
+    private String caseType;
+    
     private Integer ramSlots;
     
-    private MemoryType supportedType;
+    private Integer memoryMax;
     
-    @ElementCollection
-    @CollectionTable(name = "motherboard_storage_interfaces", joinColumns = @JoinColumn(name = "motherboard_id"))
-    @Column(name = "interface")
-    private List<String> storageInterfaces;
+    private String supportedType;
     
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StorageInterface> storageInterfaces;
+    
+    @Override
+    public boolean isCompatible(Product product) {
+        if (product instanceof Memory) {
+            return supportedType.equals(((Memory) product).getType());
+        }
+        
+        return super.isCompatible(product);
+    }
 }

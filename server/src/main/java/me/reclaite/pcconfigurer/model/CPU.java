@@ -1,26 +1,38 @@
 package me.reclaite.pcconfigurer.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class CPU {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String name;
-    
-    private Double price;
+public class CPU extends Product {
     
     private String socket;
     
-    private int cores;
+    private Double frequency;
     
-    private int threads;
+    @OneToOne
+    private VideoCard integratedGraphics;
     
+    private Integer energyConsumption;
+    
+    private Integer cores;
+    
+    private Integer threads;
+    
+    @Override
+    public boolean isCompatible(Product product) {
+        if (product instanceof Motherboard) {
+            return socket.equals(((Motherboard) product).getSocket());
+        }
+        
+        if (product instanceof Cooler) {
+            return socket.equals(((Cooler) product).getSocket());
+        }
+        
+        return true;
+    }
 }

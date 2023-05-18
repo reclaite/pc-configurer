@@ -1,25 +1,17 @@
 package me.reclaite.pcconfigurer.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Memory {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String name;
-    
-    private Double price;
+public class Memory extends Product {
     
     private Integer capacity;
     
-    private MemoryType type;
+    private String type;
     
     private Integer speed;
     

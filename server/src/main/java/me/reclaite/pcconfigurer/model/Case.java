@@ -1,5 +1,6 @@
 package me.reclaite.pcconfigurer.model;
 
+
 import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,12 +8,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class VideoCard extends Product {
+public class Case extends Product {
     
-    private Integer memorySize;
+    private String type;
     
-    private Integer frequency;
-    
-    private String memoryType;
+    private String material;
     
 }

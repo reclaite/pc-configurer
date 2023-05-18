@@ -7,26 +7,23 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Cooler extends Product {
+public class PowerSupply extends Product {
     
-    private String socket;
+    private Integer wattage;
     
-    private Integer rpm;
-    
-    private Integer noiseLevel;
-    
-    private Integer radiatorSize;
+    private String caseType;
     
     @Override
     public boolean isCompatible(Product product) {
-        if (product instanceof CPU) {
-            return socket.equals(((CPU) product).getSocket());
+        if (product instanceof Case) {
+            return caseType.equals(((Case) product).getType());
         }
         
         if (product instanceof Motherboard) {
-            return socket.equals(((Motherboard) product).getSocket());
+            return caseType.equals(((Motherboard) product).getCaseType());
         }
         
         return true;
     }
+    
 }

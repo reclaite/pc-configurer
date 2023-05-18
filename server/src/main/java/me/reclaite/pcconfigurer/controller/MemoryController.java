@@ -35,7 +35,7 @@ public class MemoryController {
     public Memory updateMemory(@PathVariable Long id, @RequestBody Memory memoryDetails) {
         Memory memory = memoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Memory not found with id " + id));
 
-        memory.setName(memoryDetails.getName());
+        memory.setTitle(memoryDetails.getTitle());
         memory.setPrice(memoryDetails.getPrice());
         memory.setCapacity(memoryDetails.getCapacity());
         memory.setType(memoryDetails.getType());

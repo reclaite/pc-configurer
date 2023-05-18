@@ -21,7 +21,7 @@ public class CPUService {
     public CPU updateCPU(Long id, CPU cpuDetails) {
         CPU cpu = cpuRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("CPU not found with id " + id));
         
-        cpu.setName(cpuDetails.getName());
+        cpu.setTitle(cpuDetails.getTitle());
         cpu.setPrice(cpuDetails.getPrice());
         cpu.setSocket(cpuDetails.getSocket());
         cpu.setCores(cpuDetails.getCores());
