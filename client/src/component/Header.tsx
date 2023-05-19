@@ -10,7 +10,7 @@ const Header: React.FC = () => {
 
     return (
         <header className="bg-warning mb-5 w-100">
-            <nav className="navbar navbar-expand-lg navbar-light bg-warning container">
+            <nav className="navbar navbar-expand-lg navbar-light bg-warning container px-2">
                 <Link to="/" className="navbar-brand text-dark fw-bold">PC Configurer</Link>
                 <button
                     className="navbar-toggler"

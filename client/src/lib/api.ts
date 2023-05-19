@@ -27,8 +27,26 @@ export const fetchApi = async (path: string, options: ApiRequestInit = {}) => {
 
     setHeader(options, 'Accept', 'application/json')
 
-    const url = "/api" + path
+    const url = "http://localhost:8080/api" + path
     return fetch(url, options)
+}
+
+export const fetchPost = async (path: string, options: ApiRequestInit = {}) => {
+    if (cachedToken)
+        setHeader(options, 'Authorization', 'Bearer ' + cachedToken)
+
+    if (isObject(options.body) && !(options.body instanceof FormData)) {
+        options.body = JSON.stringify(options.body)
+        setHeader(options, 'Content-Type', 'application/json')
+    }
+
+    setHeader(options, 'Accept', 'application/json')
+
+    const url = "http://localhost:8080" + path
+    return fetch(url, {
+        ...options,
+        method: 'POST' // Установка метода запроса на POST
+    });
 }
 
 export const setToken = (token?: string) => {

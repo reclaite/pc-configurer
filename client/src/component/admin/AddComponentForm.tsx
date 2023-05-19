@@ -1,4 +1,5 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
+import {fetchPost} from "../../lib/api";
 
 const AddComponentForm = () => {
     const [componentType, setComponentType] = useState('');
@@ -15,6 +16,7 @@ const AddComponentForm = () => {
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
+        fetchPost("/" + componentType, componentData).then(r => console.log(r.text()))
         // отправку данных на сервер или выполнить другую логику
         console.log(componentData);
     };
