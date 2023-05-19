@@ -3,6 +3,7 @@ import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import OuterContainer from "../layout/OuterContainer";
 import {fetchApi} from "../lib/api";
 import Pagination from "../layout/Pagination";
+import {ProductType} from "../lib/PcApp";
 
 const pageLimit = 50;
 
@@ -11,15 +12,6 @@ interface ProductInfo {
     image: string,
     title: string,
     price: number
-}
-
-enum ProductType {
-    cpu = "Процессор",
-    motherboard = "Материнская плата",
-    videocard = "Видеокарта",
-    memory = "Оперативная память",
-    powersupply = "Блок питания",
-
 }
 
 const ProductListPage: React.FC = () => {

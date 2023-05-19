@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
     return (
-        <footer className="bg-dark text-white mt-5 w-100">
+        <footer className="bg-black text-white mt-5 w-100">
             <div className="container py-4">
                 <div className="row">
                     <div className="col-md-4">
@@ -24,9 +24,8 @@ const Footer = () => {
                     <div className="col-md-4">
                         <h5>Социальные сети</h5>
                         <ul className="list-inline">
-                            <li className="list-inline-item"><a href="https://facebook.com">Facebook</a></li>
-                            <li className="list-inline-item"><a href="https://twitter.com">Twitter</a></li>
-                            <li className="list-inline-item"><a href="https://instagram.com">Instagram</a></li>
+                            <li className="list-inline-item"><a href="https://github.com">Github</a></li>
+                            <li className="list-inline-item"><a href="https://t.me/reclaite">Telegram</a></li>
                         </ul>
                     </div>
                 </div>
