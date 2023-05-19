@@ -8,6 +8,7 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @MappedSuperclass
@@ -23,6 +24,9 @@ public class Product {
     
     @ElementCollection
     private List<String> images;
+    
+    @ElementCollection
+    private Map<String, String> otherSpecifications;
     
     public boolean isCompatible(Product product) {
         return true;
