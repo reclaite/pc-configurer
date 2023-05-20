@@ -1,53 +1,75 @@
 package me.reclaite.pcconfigurer.controller;
 
+import lombok.RequiredArgsConstructor;
 import me.reclaite.pcconfigurer.model.Memory;
-import me.reclaite.pcconfigurer.repository.MemoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import me.reclaite.pcconfigurer.model.Product;
+import me.reclaite.pcconfigurer.model.UserInfo;
+import me.reclaite.pcconfigurer.service.ComponentService;
+import me.reclaite.pcconfigurer.service.MemoryService;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/memory")
+@RequestMapping("/cpu")
+@RequiredArgsConstructor
 public class MemoryController {
-
-    @Autowired
-    private MemoryRepository memoryRepository;
-
+    
+    private final ComponentService componentService;
+    private final MemoryService memoryService;
+    
     @GetMapping
     public List<Memory> getAllMemories() {
-        return memoryRepository.findAll();
+        return memoryService.getMemoryRepository().findAll();
     }
-
+    
+    @GetMapping("/filtered")
+    public List<Memory> getFilteredMemories(@RequestBody UserInfo userInfo) {
+        List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
+        return memoryService.getMemoryRepository().findAll().stream().filter(
+            memory -> {
+                for (Product product : products) {
+                    if (product.isCompatible(memory)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        ).collect(Collectors.toList());
+    }
+    
     @GetMapping("/{id}")
     public Memory getMemoryById(@PathVariable Long id) {
-        return memoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Memory not found with id " + id));
+        return memoryService.getMemoryRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("Memory not found with id " + id));
     }
-
+    
     @PostMapping
-    public Memory createMemory(@RequestBody Memory memory) {
-        return memoryRepository.save(memory);
+    public Memory createMemory(@RequestBody Memory cpu) {
+        return memoryService.getMemoryRepository().save(cpu);
     }
-
+    
     @PutMapping("/{id}")
-    public Memory updateMemory(@PathVariable Long id, @RequestBody Memory memoryDetails) {
-        Memory memory = memoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Memory not found with id " + id));
-
-        memory.setTitle(memoryDetails.getTitle());
-        memory.setPrice(memoryDetails.getPrice());
-        memory.setCapacity(memoryDetails.getCapacity());
-        memory.setType(memoryDetails.getType());
-        memory.setSpeed(memoryDetails.getSpeed());
-
-        return memoryRepository.save(memory);
+    public Memory updateMemory(@PathVariable Long id, @RequestBody Memory cpuDetails) {
+        return memoryService.updateMemory(id, cpuDetails);
     }
-
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMemory(@PathVariable Long id) {
-        Memory memory = memoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Memory not found with id " + id));
-        memoryRepository.delete(memory);
+        try {
+            memoryService.deleteMemory(id);
+        } catch (ResourceNotFoundException exception) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok().build();
     }
 }

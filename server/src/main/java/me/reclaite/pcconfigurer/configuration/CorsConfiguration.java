@@ -12,7 +12,10 @@ public class CorsConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-            .allowedOrigins("http://localhost:3000") // Фронт домен
+            .allowedOrigins(
+                "http://95.31.35.191:3000",
+                "http://localhost:3000"
+            ) // Фронт домен
             .allowedMethods("GET", "POST", "PUT", "DELETE")
             .allowedHeaders("*");
     }

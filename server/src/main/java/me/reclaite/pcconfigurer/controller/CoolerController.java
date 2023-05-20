@@ -1,10 +1,10 @@
 package me.reclaite.pcconfigurer.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.reclaite.pcconfigurer.model.CPU;
+import me.reclaite.pcconfigurer.model.Cooler;
 import me.reclaite.pcconfigurer.model.Product;
 import me.reclaite.pcconfigurer.model.UserInfo;
-import me.reclaite.pcconfigurer.service.CPUService;
+import me.reclaite.pcconfigurer.service.CoolerService;
 import me.reclaite.pcconfigurer.service.ComponentService;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -21,25 +21,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/cpu")
+@RequestMapping("/cooler")
 @RequiredArgsConstructor
-public class CPUController {
+public class CoolerController {
     
     private final ComponentService componentService;
-    private final CPUService cpuService;
+    private final CoolerService coolerService;
     
     @GetMapping
-    public List<CPU> getAllCPUs() {
-        return cpuService.getCpuRepository().findAll();
+    public List<Cooler> getAllCoolers() {
+        return coolerService.getCoolerRepository().findAll();
     }
     
     @GetMapping("/filtered")
-    public List<CPU> getFilteredCPUs(@RequestBody UserInfo userInfo) {
+    public List<Cooler> getFilteredCoolers(@RequestBody UserInfo userInfo) {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
-        return cpuService.getCpuRepository().findAll().stream().filter(
-            cpu -> {
+        return coolerService.getCoolerRepository().findAll().stream().filter(
+            cooler -> {
                 for (Product product : products) {
-                    if (product.isCompatible(cpu)) {
+                    if (product.isCompatible(cooler)) {
                         return false;
                     }
                 }
@@ -49,24 +49,24 @@ public class CPUController {
     }
     
     @GetMapping("/{id}")
-    public CPU getCPUById(@PathVariable Long id) {
-        return cpuService.getCpuRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("CPU not found with id " + id));
+    public Cooler getCoolerById(@PathVariable Long id) {
+        return coolerService.getCoolerRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("Cooler not found with id " + id));
     }
     
     @PostMapping
-    public CPU createCPU(@RequestBody CPU cpu) {
-        return cpuService.getCpuRepository().save(cpu);
+    public Cooler createCooler(@RequestBody Cooler cpu) {
+        return coolerService.getCoolerRepository().save(cpu);
     }
     
     @PutMapping("/{id}")
-    public CPU updateCPU(@PathVariable Long id, @RequestBody CPU cpuDetails) {
-        return cpuService.updateCPU(id, cpuDetails);
+    public Cooler updateCooler(@PathVariable Long id, @RequestBody Cooler cpuDetails) {
+        return coolerService.updateCooler(id, cpuDetails);
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCPU(@PathVariable Long id) {
+    public ResponseEntity<?> deleteCooler(@PathVariable Long id) {
         try {
-            cpuService.deleteCPU(id);
+            coolerService.deleteCooler(id);
         } catch (ResourceNotFoundException exception) {
             return ResponseEntity.badRequest().build();
         }

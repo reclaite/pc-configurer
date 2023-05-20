@@ -1,10 +1,10 @@
 package me.reclaite.pcconfigurer.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.reclaite.pcconfigurer.model.CPU;
+import me.reclaite.pcconfigurer.model.Case;
 import me.reclaite.pcconfigurer.model.Product;
 import me.reclaite.pcconfigurer.model.UserInfo;
-import me.reclaite.pcconfigurer.service.CPUService;
+import me.reclaite.pcconfigurer.service.CaseService;
 import me.reclaite.pcconfigurer.service.ComponentService;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -21,25 +21,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/cpu")
+@RequestMapping("/case")
 @RequiredArgsConstructor
-public class CPUController {
+public class CaseController {
     
     private final ComponentService componentService;
-    private final CPUService cpuService;
+    private final CaseService caseService;
     
     @GetMapping
-    public List<CPU> getAllCPUs() {
-        return cpuService.getCpuRepository().findAll();
+    public List<Case> getAllCases() {
+        return caseService.getCaseRepository().findAll();
     }
     
     @GetMapping("/filtered")
-    public List<CPU> getFilteredCPUs(@RequestBody UserInfo userInfo) {
+    public List<Case> getFilteredCases(@RequestBody UserInfo userInfo) {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
-        return cpuService.getCpuRepository().findAll().stream().filter(
-            cpu -> {
+        return caseService.getCaseRepository().findAll().stream().filter(
+            aCase -> {
                 for (Product product : products) {
-                    if (product.isCompatible(cpu)) {
+                    if (product.isCompatible(aCase)) {
                         return false;
                     }
                 }
@@ -49,27 +49,28 @@ public class CPUController {
     }
     
     @GetMapping("/{id}")
-    public CPU getCPUById(@PathVariable Long id) {
-        return cpuService.getCpuRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("CPU not found with id " + id));
+    public Case getCaseById(@PathVariable Long id) {
+        return caseService.getCaseRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("Case not found with id " + id));
     }
     
     @PostMapping
-    public CPU createCPU(@RequestBody CPU cpu) {
-        return cpuService.getCpuRepository().save(cpu);
+    public Case createCase(@RequestBody Case cpu) {
+        return caseService.getCaseRepository().save(cpu);
     }
     
     @PutMapping("/{id}")
-    public CPU updateCPU(@PathVariable Long id, @RequestBody CPU cpuDetails) {
-        return cpuService.updateCPU(id, cpuDetails);
+    public Case updateCase(@PathVariable Long id, @RequestBody Case cpuDetails) {
+        return caseService.updateCase(id, cpuDetails);
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCPU(@PathVariable Long id) {
+    public ResponseEntity<?> deleteCase(@PathVariable Long id) {
         try {
-            cpuService.deleteCPU(id);
+            caseService.deleteCase(id);
         } catch (ResourceNotFoundException exception) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
     }
+    
 }

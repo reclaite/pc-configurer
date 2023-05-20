@@ -1,10 +1,10 @@
 package me.reclaite.pcconfigurer.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.reclaite.pcconfigurer.model.CPU;
+import me.reclaite.pcconfigurer.model.VideoCard;
 import me.reclaite.pcconfigurer.model.Product;
 import me.reclaite.pcconfigurer.model.UserInfo;
-import me.reclaite.pcconfigurer.service.CPUService;
+import me.reclaite.pcconfigurer.service.VideoCardService;
 import me.reclaite.pcconfigurer.service.ComponentService;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -23,23 +23,23 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/cpu")
 @RequiredArgsConstructor
-public class CPUController {
+public class VideoCardController {
     
     private final ComponentService componentService;
-    private final CPUService cpuService;
+    private final VideoCardService videoCardService;
     
     @GetMapping
-    public List<CPU> getAllCPUs() {
-        return cpuService.getCpuRepository().findAll();
+    public List<VideoCard> getAllVideoCards() {
+        return videoCardService.getVideoCardRepository().findAll();
     }
     
     @GetMapping("/filtered")
-    public List<CPU> getFilteredCPUs(@RequestBody UserInfo userInfo) {
+    public List<VideoCard> getFilteredVideoCards(@RequestBody UserInfo userInfo) {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
-        return cpuService.getCpuRepository().findAll().stream().filter(
-            cpu -> {
+        return videoCardService.getVideoCardRepository().findAll().stream().filter(
+            videoCard -> {
                 for (Product product : products) {
-                    if (product.isCompatible(cpu)) {
+                    if (product.isCompatible(videoCard)) {
                         return false;
                     }
                 }
@@ -49,24 +49,24 @@ public class CPUController {
     }
     
     @GetMapping("/{id}")
-    public CPU getCPUById(@PathVariable Long id) {
-        return cpuService.getCpuRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("CPU not found with id " + id));
+    public VideoCard getVideoCardById(@PathVariable Long id) {
+        return videoCardService.getVideoCardRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("VideoCard not found with id " + id));
     }
     
     @PostMapping
-    public CPU createCPU(@RequestBody CPU cpu) {
-        return cpuService.getCpuRepository().save(cpu);
+    public VideoCard createVideoCard(@RequestBody VideoCard cpu) {
+        return videoCardService.getVideoCardRepository().save(cpu);
     }
     
     @PutMapping("/{id}")
-    public CPU updateCPU(@PathVariable Long id, @RequestBody CPU cpuDetails) {
-        return cpuService.updateCPU(id, cpuDetails);
+    public VideoCard updateVideoCard(@PathVariable Long id, @RequestBody VideoCard cpuDetails) {
+        return videoCardService.updateVideoCard(id, cpuDetails);
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCPU(@PathVariable Long id) {
+    public ResponseEntity<?> deleteVideoCard(@PathVariable Long id) {
         try {
-            cpuService.deleteCPU(id);
+            videoCardService.deleteVideoCard(id);
         } catch (ResourceNotFoundException exception) {
             return ResponseEntity.badRequest().build();
         }

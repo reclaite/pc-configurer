@@ -1,10 +1,10 @@
 package me.reclaite.pcconfigurer.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.reclaite.pcconfigurer.model.CPU;
+import me.reclaite.pcconfigurer.model.Motherboard;
 import me.reclaite.pcconfigurer.model.Product;
 import me.reclaite.pcconfigurer.model.UserInfo;
-import me.reclaite.pcconfigurer.service.CPUService;
+import me.reclaite.pcconfigurer.service.MotherboardService;
 import me.reclaite.pcconfigurer.service.ComponentService;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -23,23 +23,23 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/cpu")
 @RequiredArgsConstructor
-public class CPUController {
+public class MotherboardController {
     
     private final ComponentService componentService;
-    private final CPUService cpuService;
+    private final MotherboardService motherboardService;
     
     @GetMapping
-    public List<CPU> getAllCPUs() {
-        return cpuService.getCpuRepository().findAll();
+    public List<Motherboard> getAllMotherboards() {
+        return motherboardService.getMotherboardRepository().findAll();
     }
     
     @GetMapping("/filtered")
-    public List<CPU> getFilteredCPUs(@RequestBody UserInfo userInfo) {
+    public List<Motherboard> getFilteredMotherboards(@RequestBody UserInfo userInfo) {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
-        return cpuService.getCpuRepository().findAll().stream().filter(
-            cpu -> {
+        return motherboardService.getMotherboardRepository().findAll().stream().filter(
+            motherboard -> {
                 for (Product product : products) {
-                    if (product.isCompatible(cpu)) {
+                    if (product.isCompatible(motherboard)) {
                         return false;
                     }
                 }
@@ -49,24 +49,24 @@ public class CPUController {
     }
     
     @GetMapping("/{id}")
-    public CPU getCPUById(@PathVariable Long id) {
-        return cpuService.getCpuRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("CPU not found with id " + id));
+    public Motherboard getMotherboardById(@PathVariable Long id) {
+        return motherboardService.getMotherboardRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("Motherboard not found with id " + id));
     }
     
     @PostMapping
-    public CPU createCPU(@RequestBody CPU cpu) {
-        return cpuService.getCpuRepository().save(cpu);
+    public Motherboard createMotherboard(@RequestBody Motherboard cpu) {
+        return motherboardService.getMotherboardRepository().save(cpu);
     }
     
     @PutMapping("/{id}")
-    public CPU updateCPU(@PathVariable Long id, @RequestBody CPU cpuDetails) {
-        return cpuService.updateCPU(id, cpuDetails);
+    public Motherboard updateMotherboard(@PathVariable Long id, @RequestBody Motherboard cpuDetails) {
+        return motherboardService.updateMotherboard(id, cpuDetails);
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCPU(@PathVariable Long id) {
+    public ResponseEntity<?> deleteMotherboard(@PathVariable Long id) {
         try {
-            cpuService.deleteCPU(id);
+            motherboardService.deleteMotherboard(id);
         } catch (ResourceNotFoundException exception) {
             return ResponseEntity.badRequest().build();
         }

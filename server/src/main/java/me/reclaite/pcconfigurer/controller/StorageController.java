@@ -1,10 +1,10 @@
 package me.reclaite.pcconfigurer.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.reclaite.pcconfigurer.model.CPU;
+import me.reclaite.pcconfigurer.model.Storage;
 import me.reclaite.pcconfigurer.model.Product;
 import me.reclaite.pcconfigurer.model.UserInfo;
-import me.reclaite.pcconfigurer.service.CPUService;
+import me.reclaite.pcconfigurer.service.StorageService;
 import me.reclaite.pcconfigurer.service.ComponentService;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -23,23 +23,23 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/cpu")
 @RequiredArgsConstructor
-public class CPUController {
+public class StorageController {
     
     private final ComponentService componentService;
-    private final CPUService cpuService;
+    private final StorageService storageService;
     
     @GetMapping
-    public List<CPU> getAllCPUs() {
-        return cpuService.getCpuRepository().findAll();
+    public List<Storage> getAllStorages() {
+        return storageService.getStorageRepository().findAll();
     }
     
     @GetMapping("/filtered")
-    public List<CPU> getFilteredCPUs(@RequestBody UserInfo userInfo) {
+    public List<Storage> getFilteredStorages(@RequestBody UserInfo userInfo) {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
-        return cpuService.getCpuRepository().findAll().stream().filter(
-            cpu -> {
+        return storageService.getStorageRepository().findAll().stream().filter(
+            storage -> {
                 for (Product product : products) {
-                    if (product.isCompatible(cpu)) {
+                    if (product.isCompatible(storage)) {
                         return false;
                     }
                 }
@@ -49,24 +49,24 @@ public class CPUController {
     }
     
     @GetMapping("/{id}")
-    public CPU getCPUById(@PathVariable Long id) {
-        return cpuService.getCpuRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("CPU not found with id " + id));
+    public Storage getStorageById(@PathVariable Long id) {
+        return storageService.getStorageRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("Storage not found with id " + id));
     }
     
     @PostMapping
-    public CPU createCPU(@RequestBody CPU cpu) {
-        return cpuService.getCpuRepository().save(cpu);
+    public Storage createStorage(@RequestBody Storage cpu) {
+        return storageService.getStorageRepository().save(cpu);
     }
     
     @PutMapping("/{id}")
-    public CPU updateCPU(@PathVariable Long id, @RequestBody CPU cpuDetails) {
-        return cpuService.updateCPU(id, cpuDetails);
+    public Storage updateStorage(@PathVariable Long id, @RequestBody Storage cpuDetails) {
+        return storageService.updateStorage(id, cpuDetails);
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCPU(@PathVariable Long id) {
+    public ResponseEntity<?> deleteStorage(@PathVariable Long id) {
         try {
-            cpuService.deleteCPU(id);
+            storageService.deleteStorage(id);
         } catch (ResourceNotFoundException exception) {
             return ResponseEntity.badRequest().build();
         }
