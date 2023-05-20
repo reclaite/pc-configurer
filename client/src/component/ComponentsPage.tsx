@@ -1,47 +1,23 @@
 import React from "react";
+import OuterContainer from "../layout/OuterContainer";
+import TypeCard from "../layout/TypeCard";
 
 const ComponentsPage: React.FC = () => {
     return (
-        <section className="container d-flex justify-content-center gap-2">
-            <div className="container">
-                <h1>Выбор компонентов</h1>
-                <div className="row">
-                    <div className="col-md-4">
-                        <h2>Процессоры</h2>
-                        <ul className="list-group">
-                            <li
-                                className="list-group-item"
-                                // onClick={() => handleComponentSelect("Процессор 1")}
-                            >
-                                Процессор 1
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="col-md-4">
-                        <h2>Материнские платы</h2>
-                        <ul className="list-group">
-                            <li
-                                className="list-group-item"
-                                // onClick={() => handleComponentSelect("Материнская плата 1")}
-                            >
-                                Материнская плата 1
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="col-md-4">
-                        <h2>Видеокарты</h2>
-                        <ul className="list-group">
-                            <li
-                                className="list-group-item"
-                                // onClick={() => handleComponentSelect("Видеокарта 1")}
-                            >
-                                Видеокарта 1
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+        <OuterContainer>
+            <h1 className="fw-bold">Выберите тип компонента</h1>
+            <hr className="my-4"></hr>
+            <div className="d-flex flex-wrap justify-content-center gap-2 mw-100">
+                <TypeCard componentType={"Процессоры"} linkTo="/components/cpu"/>
+                <TypeCard componentType={"Материнские платы"} linkTo="/components/motherboard"/>
+                <TypeCard componentType={"Охлаждение процессора"} linkTo="/components/cooler"/>
+                <TypeCard componentType={"Оперативная память"} linkTo="/components/memory"/>
+                <TypeCard componentType={"Видеокарты"} linkTo="/components/videocard"/>
+                <TypeCard componentType={"Блоки питания"} linkTo="/components/powersupply"/>
+                <TypeCard componentType={"Накопители"} linkTo="/components/storage"/>
+                <TypeCard componentType={"Корпусы"} linkTo="/components/case"/>
             </div>
-        </section>
+        </OuterContainer>
     );
 }
 

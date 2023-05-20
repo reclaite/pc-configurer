@@ -1,14 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {useLocation, useNavigate, useParams} from 'react-router-dom';
-import OuterContainer from "../layout/OuterContainer";
-import {fetchPost} from "../lib/api";
-import Pagination from "../layout/Pagination";
+import React, {useEffect, useState} from "react";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {getUser, ProductInfo, ProductType} from "../lib/PcApp";
+import {fetchGet} from "../lib/api";
+import OuterContainer from "../layout/OuterContainer";
 import ProductCard from "../layout/ProductCard";
+import Pagination from "../layout/Pagination";
 
-const pageLimit = 50;
-
-const ProductListPage: React.FC = () => {
+const ComponentsViewPage: React.FC = () => {
     const navigate = useNavigate();
 
     const {category} = useParams();
@@ -28,7 +26,7 @@ const ProductListPage: React.FC = () => {
         const fetchData = async () => {
             try {
                 console.log(user)
-                let response = await fetchPost(`/${category}/filtered?page=${page}`, user);
+                let response = await fetchGet(`/${category}?page=${page}`);
                 const data = await response.data;
                 setProducts(data);
 
@@ -51,35 +49,26 @@ const ProductListPage: React.FC = () => {
         );
     }
 
-    const showData = products.length > 0;
-
     return (
         <OuterContainer>
             <div className="container">
                 <h1>Выбор компонента <b>{productType}</b></h1>
                 <hr className="my-4"></hr>
-                {showData ? (
-                    <>
-                        <div className="d-flex ml-2 gap-2">
-                            {products.map((product: ProductInfo) => (
-                                <ProductCard productType={category as string} product={product}/>
-                            ))}
-                        </div>
-                        <div className="pagination justify-content-center">
-                            <ul className="pagination">
-                                <Pagination currentPage={page} onPageChange={page => {
-                                    navigate(`/products/${category}?page=${page}`);
-                                }} totalPages={1}/>
-                            </ul>
-                        </div>
-                    </>
-                ) : (
-                    <h3 className="my-5 mx-auto p-5 text-center">К сожалению, подходящих компонентов к вашей сборке не
-                        найдено</h3>
-                )}
+                <div className="d-flex ml-2 gap-2">
+                    {products.map((product: ProductInfo) => (
+                        <ProductCard productType={category as string} product={product}/>
+                    ))}
+                </div>
+                <div className="pagination justify-content-center">
+                    <ul className="pagination">
+                        <Pagination currentPage={page} onPageChange={page => {
+                            navigate(`/products/${category}?page=${page}`);
+                        }} totalPages={1}/>
+                    </ul>
+                </div>
             </div>
         </OuterContainer>
     );
 };
 
-export default ProductListPage;
+export default ComponentsViewPage;

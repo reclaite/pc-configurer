@@ -8,6 +8,8 @@ import Wrapper from "./component/Wrapper";
 import NotFound from "./component/NotFoundPage";
 import AdminPage from "./component/admin/AdminPage";
 import ProductListPage from "./component/ProductListPage";
+import ComponentsPage from "./component/ComponentsPage";
+import ComponentsViewPage from "./component/ComponentsViewPage";
 
 const Layout: React.FC = () => {
     return (
@@ -19,6 +21,8 @@ const Layout: React.FC = () => {
                     <Route path="/about" Component={AboutPage}/>
                     <Route path="/admin" Component={AdminPage}/>
                     <Route path="/products/:category" Component={ProductListPage}/>
+                    <Route path="/components" Component={ComponentsPage}/>
+                    <Route path="/components/:category" Component={ComponentsViewPage}/>
                     <Route path="*" Component={NotFound}/>
                 </Routes>
             </Wrapper>

@@ -16,7 +16,7 @@ const AddComponentForm = () => {
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        fetchPost("/" + componentType, componentData).then(r => console.log(r.text()))
+        fetchPost("/" + componentType, componentData)
         // отправку данных на сервер или выполнить другую логику
         console.log(componentData);
     };
