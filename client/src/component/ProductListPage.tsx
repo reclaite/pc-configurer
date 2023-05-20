@@ -3,7 +3,7 @@ import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import OuterContainer from "../layout/OuterContainer";
 import {fetchApi} from "../lib/api";
 import Pagination from "../layout/Pagination";
-import {ProductType} from "../lib/PcApp";
+import {getUser, ProductType} from "../lib/PcApp";
 
 const pageLimit = 50;
 
@@ -31,8 +31,10 @@ const ProductListPage: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let response = await fetchApi(`/products/${category}?page=${page}`);
-                const data = await response.json();
+                const user = getUser();
+                console.log(user);
+                let response = await fetchApi(`/${category}/filtered`, {user});
+                const data = await response.data;
                 setProducts(data);
 
                 // response = await fetchApi(`/products`)

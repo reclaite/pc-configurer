@@ -1,7 +1,7 @@
 package me.reclaite.pcconfigurer.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.reclaite.pcconfigurer.model.Case;
+import me.reclaite.pcconfigurer.model.ComputerCase;
 import me.reclaite.pcconfigurer.model.Product;
 import me.reclaite.pcconfigurer.model.UserInfo;
 import me.reclaite.pcconfigurer.service.CaseService;
@@ -29,12 +29,12 @@ public class CaseController {
     private final CaseService caseService;
     
     @GetMapping
-    public List<Case> getAllCases() {
+    public List<ComputerCase> getAllCases() {
         return caseService.getCaseRepository().findAll();
     }
     
     @GetMapping("/filtered")
-    public List<Case> getFilteredCases(@RequestBody UserInfo userInfo) {
+    public List<ComputerCase> getFilteredCases(@RequestBody UserInfo userInfo) {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return caseService.getCaseRepository().findAll().stream().filter(
             aCase -> {
@@ -49,17 +49,17 @@ public class CaseController {
     }
     
     @GetMapping("/{id}")
-    public Case getCaseById(@PathVariable Long id) {
+    public ComputerCase getCaseById(@PathVariable Long id) {
         return caseService.getCaseRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("Case not found with id " + id));
     }
     
     @PostMapping
-    public Case createCase(@RequestBody Case cpu) {
+    public ComputerCase createCase(@RequestBody ComputerCase cpu) {
         return caseService.getCaseRepository().save(cpu);
     }
     
     @PutMapping("/{id}")
-    public Case updateCase(@PathVariable Long id, @RequestBody Case cpuDetails) {
+    public ComputerCase updateCase(@PathVariable Long id, @RequestBody ComputerCase cpuDetails) {
         return caseService.updateCase(id, cpuDetails);
     }
     

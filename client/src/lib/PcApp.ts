@@ -1,13 +1,14 @@
-export interface PcUser {
+export interface UserInfo {
     selected: Map<ProductType, ProductInfo>,
 }
 
 export interface ProductInfo {
     id: number,
     type: ProductType,
-    image: string,
+    images: string[],
     title: string,
-    price: number
+    price: number,
+    otherSpecifications: Map<string, string>,
 }
 
 export enum ProductType {
@@ -18,11 +19,11 @@ export enum ProductType {
     powersupply = "Блок питания",
 }
 
-export function getUser(): PcUser | null {
+export function getUser(): UserInfo {
     const storedUser = localStorage.getItem('user');
-    return storedUser ? JSON.parse(storedUser) : null;
+    return storedUser ? JSON.parse(storedUser) : {selected: new Map<ProductType, ProductInfo>()};
 }
 
-export function saveUser(user: PcUser) {
+export function saveUser(user: UserInfo) {
     localStorage.setItem('user', JSON.stringify(user))
 }

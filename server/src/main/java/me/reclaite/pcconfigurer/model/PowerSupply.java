@@ -15,8 +15,8 @@ public class PowerSupply extends Product {
     
     @Override
     public boolean isCompatible(Product product) {
-        if (product instanceof Case) {
-            return caseType.equals(((Case) product).getType());
+        if (product instanceof ComputerCase) {
+            return caseType.equals(((ComputerCase) product).getType());
         }
         
         if (product instanceof Motherboard) {

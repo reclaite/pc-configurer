@@ -1,21 +1,24 @@
 import React from 'react';
-import {Button, Card} from 'react-bootstrap';
+import OuterContainer from "../layout/OuterContainer";
+import {useNavigate} from "react-router-dom";
 
 const Home: React.FC = () => {
+    const navigate = useNavigate();
+
+    const buildClick = () => {
+        navigate("/build");
+    }
+
     return (
-        <div className="container">
-            <Card>
-                <Card.Body>
-                    <Card.Title>Welcome to PC Configurer</Card.Title>
-                    <Card.Text>
-                        Use our website to configure your own custom PC with ease.
-                    </Card.Text>
-                    <Button variant="primary" href="/configurator">
-                        Start Configuring
-                    </Button>
-                </Card.Body>
-            </Card>
-        </div>
+        <OuterContainer>
+            <div className="mw-50">
+                <h1 className="container title">Добро пожаловать в конфигуратор персональных компьютеров</h1>
+                <hr className="my-4"></hr>
+                <p className="container text">Здесь вы сможете собрать собственную сборку компьютера и поделиться ей с
+                    другими</p>
+                <button className="btn btn-primary" onClick={buildClick}>Начать сборку</button>
+            </div>
+        </OuterContainer>
     );
 };
 

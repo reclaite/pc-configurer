@@ -1,3 +1,5 @@
+import axios from "axios";
+
 let cachedToken = localStorage.getItem('at') || ''
 
 interface ApiRequestInit extends Omit<RequestInit, 'headers'> {
@@ -16,7 +18,7 @@ function isObject(val: unknown): boolean {
         val !== null
 }
 
-export const fetchApi = async (path: string, options: ApiRequestInit = {}) => {
+export const fetchApi = async (path: string, data = {}, options: ApiRequestInit = {}) => {
     if (cachedToken)
         setHeader(options, 'Authorization', 'Bearer ' + cachedToken)
 
@@ -27,8 +29,10 @@ export const fetchApi = async (path: string, options: ApiRequestInit = {}) => {
 
     setHeader(options, 'Accept', 'application/json')
 
-    const url = "http://localhost:8080/api" + path
-    return fetch(url, options)
+    const url = "http://localhost:8080" + path
+    return axios.post(url, {
+        data
+    });
 }
 
 export const fetchPost = async (path: string, options: ApiRequestInit = {}) => {

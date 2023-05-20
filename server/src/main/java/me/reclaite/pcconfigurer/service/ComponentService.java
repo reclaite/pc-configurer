@@ -1,5 +1,6 @@
 package me.reclaite.pcconfigurer.service;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.reclaite.pcconfigurer.model.Product;
 import me.reclaite.pcconfigurer.model.ProductInfo;
@@ -14,6 +15,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ComponentService {
     
+    @Getter
+    private final int pageLimit = 50;
+    
     private final CPUService cpuService;
     private final CaseService caseService;
     private final CoolerService coolerService;
@@ -25,20 +29,21 @@ public class ComponentService {
     public List<Product> getSelectedProducts(Map<ProductType, ProductInfo> selectedTypes) {
         List<Product> products = new ArrayList<>();
         for (Map.Entry<ProductType, ProductInfo> entry : selectedTypes.entrySet()) {
+            final ProductInfo info = entry.getValue();
             switch (entry.getKey()) {
-                case CPU -> products.add(cpuService.getCpuRepository().findById(entry.getValue().getId()).orElse(null));
+                case CPU -> products.add(cpuService.getCpuRepository().findById(info.getId()).orElse(null));
                 case COOLER ->
-                    products.add(coolerService.getCoolerRepository().findById(entry.getValue().getId()).orElse(null));
+                    products.add(coolerService.getCoolerRepository().findById(info.getId()).orElse(null));
                 case CASE ->
-                    products.add(caseService.getCaseRepository().findById(entry.getValue().getId()).orElse(null));
+                    products.add(caseService.getCaseRepository().findById(info.getId()).orElse(null));
                 case MEMORY ->
-                    products.add(memoryService.getMemoryRepository().findById(entry.getValue().getId()).orElse(null));
+                    products.add(memoryService.getMemoryRepository().findById(info.getId()).orElse(null));
                 case MOTHERBOARD ->
-                    products.add(motherboardService.getMotherboardRepository().findById(entry.getValue().getId()).orElse(null));
+                    products.add(motherboardService.getMotherboardRepository().findById(info.getId()).orElse(null));
                 case STORAGE ->
-                    products.add(storageService.getStorageRepository().findById(entry.getValue().getId()).orElse(null));
+                    products.add(storageService.getStorageRepository().findById(info.getId()).orElse(null));
                 case VIDEOCARD ->
-                    products.add(videoCardService.getVideoCardRepository().findById(entry.getValue().getId()).orElse(null));
+                    products.add(videoCardService.getVideoCardRepository().findById(info.getId()).orElse(null));
             }
         }
         return products;

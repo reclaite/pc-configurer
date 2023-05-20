@@ -33,7 +33,7 @@ public class CPUController {
         return cpuService.getCpuRepository().findAll();
     }
     
-    @GetMapping("/filtered")
+    @PostMapping("/filtered")
     public List<CPU> getFilteredCPUs(@RequestBody UserInfo userInfo) {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return cpuService.getCpuRepository().findAll().stream().filter(

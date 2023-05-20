@@ -31,7 +31,7 @@ public class MemoryService {
         return memoryRepository.save(memory);
     }
     
-    public Memory deleteMemory(Long id) {
+    public Memory deleteMemoryEntry(Long id) {
         Memory memory = memoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Memory not found with id " + id));
         memoryRepository.delete(memory);
         return memory;

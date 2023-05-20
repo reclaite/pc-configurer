@@ -32,8 +32,8 @@ public class Motherboard extends Product {
             return socket.equals(((CPU) product).getSocket());
         }
         
-        if (product instanceof Case) {
-            return caseType.equals(((Case) product).getType());
+        if (product instanceof ComputerCase) {
+            return caseType.equals(((ComputerCase) product).getType());
         }
         
         if (product instanceof Memory) {

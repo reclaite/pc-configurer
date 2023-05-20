@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/cpu")
+@RequestMapping("/memory")
 @RequiredArgsConstructor
 public class MemoryController {
     
@@ -33,12 +34,17 @@ public class MemoryController {
         return memoryService.getMemoryRepository().findAll();
     }
     
-    @GetMapping("/filtered")
-    public List<Memory> getFilteredMemories(@RequestBody UserInfo userInfo) {
+    @PostMapping("/filtered")
+    public List<Memory> getFilteredMemories(@RequestBody UserInfo userInfo, @RequestParam Integer page) {
+        
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return memoryService.getMemoryRepository().findAll().stream().filter(
             memory -> {
+                int offset = (page - 1) * componentService.getPageLimit();
                 for (Product product : products) {
+                    if (offset-- >= 0) {
+                        continue;
+                    }
                     if (product.isCompatible(memory)) {
                         return false;
                     }
@@ -66,7 +72,7 @@ public class MemoryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMemory(@PathVariable Long id) {
         try {
-            memoryService.deleteMemory(id);
+            memoryService.deleteMemoryEntry(id);
         } catch (ResourceNotFoundException exception) {
             return ResponseEntity.badRequest().build();
         }
