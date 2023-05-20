@@ -52,7 +52,7 @@ const ComponentsViewPage: React.FC = () => {
     return (
         <OuterContainer>
             <div className="container">
-                <h1>Выбор компонента <b>{productType}</b></h1>
+                <h1>Доступные компоненты: <b>{productType}</b></h1>
                 <hr className="my-4"></hr>
                 <div className="d-flex ml-2 gap-2">
                     {products.map((product: ProductInfo) => (

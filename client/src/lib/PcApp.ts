@@ -17,6 +17,9 @@ export enum ProductType {
     videocard = "Видеокарта",
     memory = "Оперативная память",
     powersupply = "Блок питания",
+    cooler = "Кулер",
+    storage = "Накопитель",
+    case = "Корпус"
 }
 
 export function getUser(): UserInfo {
