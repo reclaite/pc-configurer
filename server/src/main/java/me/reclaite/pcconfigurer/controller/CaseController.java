@@ -33,13 +33,13 @@ public class CaseController {
         return caseService.getCaseRepository().findAll();
     }
     
-    @GetMapping("/filtered")
+    @PostMapping("/filtered")
     public List<ComputerCase> getFilteredCases(@RequestBody UserInfo userInfo) {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return caseService.getCaseRepository().findAll().stream().filter(
             aCase -> {
                 for (Product product : products) {
-                    if (product.isCompatible(aCase)) {
+                    if (!product.isCompatible(aCase)) {
                         return false;
                     }
                 }

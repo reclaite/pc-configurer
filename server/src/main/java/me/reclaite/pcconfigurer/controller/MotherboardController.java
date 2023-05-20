@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,13 +34,13 @@ public class MotherboardController {
         return motherboardService.getMotherboardRepository().findAll();
     }
     
-    @GetMapping("/filtered")
+    @PostMapping("/filtered")
     public List<Motherboard> getFilteredMotherboards(@RequestBody UserInfo userInfo) {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return motherboardService.getMotherboardRepository().findAll().stream().filter(
             motherboard -> {
                 for (Product product : products) {
-                    if (product.isCompatible(motherboard)) {
+                    if (!product.isCompatible(motherboard)) {
                         return false;
                     }
                 }

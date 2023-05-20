@@ -7,6 +7,6 @@ import java.util.Map;
 @Data
 public class UserInfo {
     
-    private Map<ProductType, ProductInfo> selected;
+    private Map<String, ProductInfo> selected;
     
 }

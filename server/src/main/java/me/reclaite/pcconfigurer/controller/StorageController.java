@@ -33,13 +33,13 @@ public class StorageController {
         return storageService.getStorageRepository().findAll();
     }
     
-    @GetMapping("/filtered")
+    @PostMapping("/filtered")
     public List<Storage> getFilteredStorages(@RequestBody UserInfo userInfo) {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return storageService.getStorageRepository().findAll().stream().filter(
             storage -> {
                 for (Product product : products) {
-                    if (product.isCompatible(storage)) {
+                    if (!product.isCompatible(storage)) {
                         return false;
                     }
                 }

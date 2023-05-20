@@ -39,7 +39,7 @@ public class CPUController {
         return cpuService.getCpuRepository().findAll().stream().filter(
             cpu -> {
                 for (Product product : products) {
-                    if (product.isCompatible(cpu)) {
+                    if (!product.isCompatible(cpu)) {
                         return false;
                     }
                 }

@@ -26,26 +26,33 @@ public class ComponentService {
     private final StorageService storageService;
     private final VideoCardService videoCardService;
     
-    public List<Product> getSelectedProducts(Map<ProductType, ProductInfo> selectedTypes) {
+    public List<Product> getSelectedProducts(Map<String, ProductInfo> selectedTypes) {
         List<Product> products = new ArrayList<>();
-        for (Map.Entry<ProductType, ProductInfo> entry : selectedTypes.entrySet()) {
+        
+        if (selectedTypes == null || selectedTypes.isEmpty()) {
+            return products;
+        }
+        
+        for (Map.Entry<String, ProductInfo> entry : selectedTypes.entrySet()) {
             final ProductInfo info = entry.getValue();
             switch (entry.getKey()) {
-                case CPU -> products.add(cpuService.getCpuRepository().findById(info.getId()).orElse(null));
-                case COOLER ->
+                case "cpu" -> products.add(cpuService.getCpuRepository().findById(info.getId()).orElse(null));
+                case "cooler" ->
                     products.add(coolerService.getCoolerRepository().findById(info.getId()).orElse(null));
-                case CASE ->
+                case "case" ->
                     products.add(caseService.getCaseRepository().findById(info.getId()).orElse(null));
-                case MEMORY ->
+                case "memory" ->
                     products.add(memoryService.getMemoryRepository().findById(info.getId()).orElse(null));
-                case MOTHERBOARD ->
+                case "motherboard" ->
                     products.add(motherboardService.getMotherboardRepository().findById(info.getId()).orElse(null));
-                case STORAGE ->
+                case "storage" ->
                     products.add(storageService.getStorageRepository().findById(info.getId()).orElse(null));
-                case VIDEOCARD ->
+                case "videocard" ->
                     products.add(videoCardService.getVideoCardRepository().findById(info.getId()).orElse(null));
             }
         }
+    
+        System.out.println(products);
         return products;
     }
     

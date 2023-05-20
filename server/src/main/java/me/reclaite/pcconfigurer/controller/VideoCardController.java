@@ -33,13 +33,13 @@ public class VideoCardController {
         return videoCardService.getVideoCardRepository().findAll();
     }
     
-    @GetMapping("/filtered")
+    @PostMapping("/filtered")
     public List<VideoCard> getFilteredVideoCards(@RequestBody UserInfo userInfo) {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return videoCardService.getVideoCardRepository().findAll().stream().filter(
             videoCard -> {
                 for (Product product : products) {
-                    if (product.isCompatible(videoCard)) {
+                    if (!product.isCompatible(videoCard)) {
                         return false;
                     }
                 }
