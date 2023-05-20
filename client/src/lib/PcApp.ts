@@ -1,5 +1,5 @@
 export interface UserInfo {
-    selected: Map<ProductType, ProductInfo>,
+    selected: { [key: string]: ProductInfo },
 }
 
 export interface ProductInfo {

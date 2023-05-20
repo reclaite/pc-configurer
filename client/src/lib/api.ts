@@ -30,9 +30,7 @@ export const fetchApi = async (path: string, data = {}, options: ApiRequestInit 
     setHeader(options, 'Accept', 'application/json')
 
     const url = "http://localhost:8080" + path
-    return axios.post(url, {
-        data
-    });
+    return axios.post(url, data);
 }
 
 export const fetchPost = async (path: string, options: ApiRequestInit = {}) => {
