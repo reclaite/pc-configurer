@@ -39,7 +39,7 @@ public class CaseController {
         return caseService.getCaseRepository().findAll().stream().filter(
             aCase -> {
                 for (Product product : products) {
-                    if (!product.isCompatible(aCase)) {
+                    if (!product.isCompatible(userInfo, aCase)) {
                         return false;
                     }
                 }

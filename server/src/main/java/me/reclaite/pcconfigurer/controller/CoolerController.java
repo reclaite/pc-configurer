@@ -39,7 +39,7 @@ public class CoolerController {
         return coolerService.getCoolerRepository().findAll().stream().filter(
             cooler -> {
                 for (Product product : products) {
-                    if (!product.isCompatible(cooler)) {
+                    if (!product.isCompatible(userInfo, cooler)) {
                         return false;
                     }
                 }

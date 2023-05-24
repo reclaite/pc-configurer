@@ -45,7 +45,7 @@ public class MemoryController {
                     if (offset-- >= 0) {
                         continue;
                     }
-                    if (!product.isCompatible(memory)) {
+                    if (!product.isCompatible(userInfo, memory)) {
                         return false;
                     }
                 }

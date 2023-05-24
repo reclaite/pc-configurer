@@ -39,7 +39,7 @@ public class StorageController {
         return storageService.getStorageRepository().findAll().stream().filter(
             storage -> {
                 for (Product product : products) {
-                    if (!product.isCompatible(storage)) {
+                    if (!product.isCompatible(userInfo, storage)) {
                         return false;
                     }
                 }

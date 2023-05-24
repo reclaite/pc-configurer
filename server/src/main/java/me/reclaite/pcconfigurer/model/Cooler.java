@@ -18,7 +18,7 @@ public class Cooler extends Product {
     private Integer radiatorSize;
     
     @Override
-    public boolean isCompatible(Product product) {
+    public boolean isCompatible(UserInfo userInfo, Product product) {
         if (product instanceof CPU) {
             return socket.equals(((CPU) product).getSocket());
         }
@@ -27,6 +27,6 @@ public class Cooler extends Product {
             return socket.equals(((Motherboard) product).getSocket());
         }
         
-        return true;
+        return super.isCompatible(userInfo, product);
     }
 }

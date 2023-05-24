@@ -8,5 +8,6 @@ import java.util.Map;
 public class UserInfo {
     
     private Map<String, ProductInfo> selected;
+    private ConfigurationType configurationType;
     
 }

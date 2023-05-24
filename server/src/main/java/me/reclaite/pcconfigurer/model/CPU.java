@@ -24,7 +24,7 @@ public class CPU extends Product {
     private Integer threads;
     
     @Override
-    public boolean isCompatible(Product product) {
+    public boolean isCompatible(UserInfo userInfo, Product product) {
         if (product instanceof Motherboard) {
             return socket.equals(((Motherboard) product).getSocket());
         }
@@ -33,6 +33,6 @@ public class CPU extends Product {
             return socket.equals(((Cooler) product).getSocket());
         }
         
-        return true;
+        return super.isCompatible(userInfo, product);
     }
 }

@@ -14,7 +14,7 @@ public class PowerSupply extends Product {
     private String caseType;
     
     @Override
-    public boolean isCompatible(Product product) {
+    public boolean isCompatible(UserInfo userInfo, Product product) {
         if (product instanceof ComputerCase) {
             return caseType.equals(((ComputerCase) product).getType());
         }
@@ -23,7 +23,7 @@ public class PowerSupply extends Product {
             return caseType.equals(((Motherboard) product).getCaseType());
         }
         
-        return true;
+        return super.isCompatible(userInfo, product);
     }
     
 }

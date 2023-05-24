@@ -1,8 +1,7 @@
 package me.reclaite.pcconfigurer.model;
 
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,11 +22,11 @@ public class Motherboard extends Product {
     
     private String supportedType;
     
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<StorageInterface> storageInterfaces;
+    @ElementCollection
+    private List<String> storageInterfaces;
     
     @Override
-    public boolean isCompatible(Product product) {
+    public boolean isCompatible(UserInfo userInfo, Product product) {
         if (product instanceof CPU) {
             return socket.equals(((CPU) product).getSocket());
         }
@@ -40,6 +39,6 @@ public class Motherboard extends Product {
             return supportedType.equals(((Memory) product).getType());
         }
         
-        return super.isCompatible(product);
+        return super.isCompatible(userInfo, product);
     }
 }

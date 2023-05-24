@@ -40,7 +40,7 @@ public class MotherboardController {
         return motherboardService.getMotherboardRepository().findAll().stream().filter(
             motherboard -> {
                 for (Product product : products) {
-                    if (!product.isCompatible(motherboard)) {
+                    if (!product.isCompatible(userInfo, motherboard)) {
                         return false;
                     }
                 }

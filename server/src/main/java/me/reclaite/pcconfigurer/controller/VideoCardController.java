@@ -39,7 +39,7 @@ public class VideoCardController {
         return videoCardService.getVideoCardRepository().findAll().stream().filter(
             videoCard -> {
                 for (Product product : products) {
-                    if (!product.isCompatible(videoCard)) {
+                    if (!product.isCompatible(userInfo, videoCard)) {
                         return false;
                     }
                 }

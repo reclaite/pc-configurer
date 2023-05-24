@@ -2,6 +2,7 @@ package me.reclaite.pcconfigurer.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.reclaite.pcconfigurer.model.CPU;
+import me.reclaite.pcconfigurer.model.ConfigurationType;
 import me.reclaite.pcconfigurer.model.Motherboard;
 import me.reclaite.pcconfigurer.repository.MotherboardRepository;
 import me.reclaite.pcconfigurer.service.CPUService;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
@@ -17,8 +19,12 @@ import java.util.List;
 public class ProductController {
     
     private final CPUService cpuService;
-    
     private final MotherboardRepository motherboardRepository;
+    
+    @GetMapping("/types")
+    public ConfigurationType[] getTypes() {
+        return ConfigurationType.getTypes();
+    }
     
     @GetMapping("/cpu")
     public List<CPU> getCPUs() {
