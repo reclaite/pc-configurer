@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/products")
@@ -22,8 +23,14 @@ public class ProductController {
     private final MotherboardRepository motherboardRepository;
     
     @GetMapping("/types")
-    public ConfigurationType[] getTypes() {
-        return ConfigurationType.getTypes();
+    public List<ConfigurationType.DTO> getTypes() {
+        return Arrays.stream(ConfigurationType.values())
+            .map(this::mapToDto)
+            .collect(Collectors.toList());
+    }
+    
+    private ConfigurationType.DTO mapToDto(ConfigurationType configurationType) {
+        return new ConfigurationType.DTO(configurationType, configurationType.getTitle());
     }
     
     @GetMapping("/cpu")

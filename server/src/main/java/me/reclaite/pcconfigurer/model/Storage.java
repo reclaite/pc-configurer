@@ -15,5 +15,11 @@ public class Storage extends Product {
     
     private String interfaceType;
     
-    
+    @Override
+    public boolean isCompatible(UserInfo userInfo, Product product) {
+        if (product instanceof Motherboard) {
+            return ((Motherboard) product).getStorageInterfaces().contains(interfaceType);
+        }
+        return super.isCompatible(userInfo, product);
+    }
 }

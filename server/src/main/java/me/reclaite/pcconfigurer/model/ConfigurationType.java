@@ -1,6 +1,6 @@
 package me.reclaite.pcconfigurer.model;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -12,13 +12,26 @@ public enum ConfigurationType {
     GRAPHICS("Графические задачи"),
     GAMING("Игровые задачи");
     
-    @JsonValue
     private final String title;
     
     private static final ConfigurationType[] TYPES = ConfigurationType.values();
     
     public static ConfigurationType[] getTypes() {
         return TYPES;
+    }
+    
+    @Data
+    @RequiredArgsConstructor
+    public static class DTO {
+        
+        private final ConfigurationType name;
+        private final String title;
+        
+        public DTO() {
+            this.name = null;
+            this.title = null;
+        }
+        
     }
     
 }
