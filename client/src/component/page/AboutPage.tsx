@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import OuterContainer from "../layout/OuterContainer";
+import OuterContainer from "../../layout/OuterContainer";
 
 const AboutPage: React.FC = () => {
     const [name, setName] = useState('');

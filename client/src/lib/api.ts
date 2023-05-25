@@ -32,13 +32,13 @@ const prepareFetch = async (data = {}, options: ApiRequestInit = {}) => {
 
 export const fetchGet = async (path: string, options: ApiRequestInit = {}) => {
     prepareFetch(options);
-    const url = "http://localhost:8080" + path
+    const url = "http://95.31.35.191:8080" + path
     return axios.get(url);
 }
 
 export const fetchPost = async (path: string, data = {}, options: ApiRequestInit = {}) => {
     prepareFetch(data, options);
-    const url = "http://localhost:8080" + path
+    const url = "http://95.31.35.191:8080" + path
     return axios.post(url, data);
 }
 

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useNavigate, useParams} from 'react-router-dom';
-import OuterContainer from "../layout/OuterContainer";
-import {fetchPost} from "../lib/api";
-import Pagination from "../layout/Pagination";
-import {getUser, ProductInfo, ProductType} from "../lib/PcApp";
-import ProductCard from "../layout/ProductCard";
+import OuterContainer from "../../layout/OuterContainer";
+import {fetchPost} from "../../lib/api";
+import Pagination from "../../layout/Pagination";
+import {getUser, ProductInfo, ProductType} from "../../lib/PcApp";
+import ProductCard from "../../layout/ProductCard";
 
 const pageLimit = 50;
 

@@ -6,7 +6,7 @@ interface WrapperProps {
 
 const Wrapper = ({children}: WrapperProps) => {
     return (
-        <div className="min-vh-100 min-vw-80">
+        <div className="min-vh-100 min-vw-80 my-auto mx-auto">
             {children}
         </div>
     );

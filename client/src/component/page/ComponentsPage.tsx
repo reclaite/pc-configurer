@@ -1,6 +1,6 @@
 import React from "react";
-import OuterContainer from "../layout/OuterContainer";
-import TypeCard from "../layout/TypeCard";
+import OuterContainer from "../../layout/OuterContainer";
+import TypeCard from "../../layout/TypeCard";
 
 const ComponentsPage: React.FC = () => {
     return (

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
-import {getUser, ProductInfo, ProductType} from "../lib/PcApp";
-import {fetchGet} from "../lib/api";
-import OuterContainer from "../layout/OuterContainer";
-import ProductCard from "../layout/ProductCard";
-import Pagination from "../layout/Pagination";
+import {getUser, ProductInfo, ProductType} from "../../lib/PcApp";
+import {fetchGet} from "../../lib/api";
+import OuterContainer from "../../layout/OuterContainer";
+import ProductCard from "../../layout/ProductCard";
+import Pagination from "../../layout/Pagination";
 
 const ComponentsViewPage: React.FC = () => {
     const navigate = useNavigate();
@@ -29,8 +29,6 @@ const ComponentsViewPage: React.FC = () => {
                 let response = await fetchGet(`/${category}?page=${page}`);
                 const data = await response.data;
                 setProducts(data);
-
-                // response = await fetchApi(`/products`)
             } catch (error) {
                 console.error('Ошибка при получении списка товаров:', error);
                 setErrorCaught(true)

@@ -22,7 +22,7 @@ const Header: React.FC = () => {
                 <div className={`collapse navbar-collapse${isOpen ? ' show' : ''}`}>
                     <ul className="navbar-nav ms-auto">
                         <li className="nav-item">
-                            <Link to="/build" className="nav-link text-dark">Собрать сборку</Link>
+                            <Link to="/build" className="nav-link text-dark">Собрать конфигурацию</Link>
                         </li>
                         <li className="nav-item">
                             <Link to="/components" className="nav-link text-dark">Компоненты</Link>

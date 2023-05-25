@@ -1,5 +1,11 @@
 export interface UserInfo {
     selected: { [key: string]: ProductInfo },
+    configurationType: ConfigurationType,
+}
+
+export interface ConfigurationType {
+    name: string,
+    title: string
 }
 
 export interface ProductInfo {

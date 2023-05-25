@@ -1,5 +1,5 @@
 import React from 'react';
-import OuterContainer from "../layout/OuterContainer";
+import OuterContainer from "../../layout/OuterContainer";
 
 const NotFound = () => {
     return (
