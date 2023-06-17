@@ -15,21 +15,20 @@ const ProductCard: React.FC<ProductProps> = (props) => {
     };
 
     return (
-        <div key={props.product.id} className="col-xs-1 col-sm-6 col-md-3 col-lg-2 mb-4 mh-120">
-            <div className="card">
+        <div key={props.product.id} className="col-md-2 col-5 card mb-2">
+            <div className="w-50 mx-auto mt-1">
                 <img
                     src="https://vimeworld.com/images/fluidicon.png"
-                    className="mx-auto img-thumbnail card-img-top"
+                    className="mx-auto img-fluid"
                     alt={props.product.title}
-                    style={{width: '150px', height: '150px'}}
                 />
-                <div className="card-body">
-                    <h5 className="card-title">{props.product.title}</h5>
-                    <h6 className="card-price">{props.product.price} ₽</h6>
-                </div>
-                <div className="card-footer">
-                    <button className="btn btn-primary" onClick={handleClick}>Выбрать</button>
-                </div>
+            </div>
+            <div className="card-body">
+                <h5 className="card-title text-truncate">{props.product.title}</h5>
+                <h6 className="card-price">{props.product.price} ₽</h6>
+            </div>
+            <div className="card-footer">
+                <button className="btn btn-primary" onClick={handleClick}>Выбрать</button>
             </div>
         </div>
     );

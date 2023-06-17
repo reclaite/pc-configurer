@@ -32,6 +32,9 @@ const BuildPage: React.FC = () => {
                         <PurposeCard user={user} configurationType={type}/>
                     ))}
                 </div>
+                <div className="mt-4 col-6 col-sm-4 col-md-3 col-xl-2 mx-auto text-center">
+                    <button className="btn btn-primary">Подберу самостоятельно</button>
+                </div>
             </OuterContainer>
         )
     }
@@ -68,7 +71,7 @@ const BuildPage: React.FC = () => {
                 <SelectedCard user={user} title={"Корпус"} type={"case"}/>
                 <hr className="my-4"></hr>
                 <div className="card card-body my-2">
-                    <p className="text-center">Общая стоимость комплектующих <b>{overallPrice}₽</b></p>
+                    <p className="text-center">Общая стоимость комплектующих <b>{overallPrice} ₽</b></p>
                     <button className="btn btn-primary col-md-3 mx-auto">Сохранить конфигурацию</button>
                     <div className="card card-body mt-4 w-50 mx-auto">
                         <p><b>Конфигурация успешно сохранена!</b> Вы можете поделиться ей с другими по данной ссылке:</p>

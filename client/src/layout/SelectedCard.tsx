@@ -35,7 +35,7 @@ const SelectedCard: React.FC<SelectedCardProps> = ({user, title, type}) => {
                             </thead>
                             <tbody>
                             <tr>
-                                <td><img src="/question.png" alt={title} className="img-thumbnail col-md-3 col-sm-5"></img></td>
+                                <td><img src="/question.png" alt={title} className="img-thumbnail col-2 col-md-3 col-sm-5"></img></td>
                                 <td className="fw-bold col-md-4 col-sm-5">{product.title}</td>
                                 <td className="col-md-4 col-sm-2">{product.price} ₽</td>
                             </tr>

@@ -52,7 +52,7 @@ const ComponentsViewPage: React.FC = () => {
             <div className="container">
                 <h1>Доступные компоненты: <b>{productType}</b></h1>
                 <hr className="my-4"></hr>
-                <div className="d-flex ml-2 gap-2">
+                <div className="d-flex justify-content-start flex-wrap gap-2">
                     {products.map((product: ProductInfo) => (
                         <ProductCard productType={category as string} product={product}/>
                     ))}
