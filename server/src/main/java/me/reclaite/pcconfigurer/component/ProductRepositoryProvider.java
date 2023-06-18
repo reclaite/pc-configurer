@@ -3,22 +3,22 @@ package me.reclaite.pcconfigurer.component;
 import jakarta.annotation.PostConstruct;
 import me.reclaite.pcconfigurer.model.Product;
 import me.reclaite.pcconfigurer.model.ProductType;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.GenericTypeResolver;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Service
 public class ProductRepositoryProvider {
     
-    private final Map<ProductType, CrudRepository<Product, Long>> repositoryMap;
+    private final Map<ProductType, JpaRepository<? extends Product, Long>> repositoryMap;
     
-    public ProductRepositoryProvider(List<CrudRepository<Product, Long>> repositories) {
+    @Autowired
+    public ProductRepositoryProvider(List<JpaRepository<? extends Product, Long>> repositories) {
         repositoryMap = new HashMap<>();
         repositories.forEach(repository -> {
             Class<?> entityType = getEntityType(repository);
@@ -39,28 +39,23 @@ public class ProductRepositoryProvider {
         }
     }
     
-    public CrudRepository<Product, Long> getRepository(ProductType productType) {
+    public JpaRepository<? extends Product, Long> getRepository(ProductType productType) {
         return repositoryMap.get(productType);
     }
     
-    private Class<?> getEntityType(CrudRepository<Product, Long> repository) {
-        Type[] interfaces = repository.getClass().getGenericInterfaces();
-        for (Type type : interfaces) {
-            if (type instanceof ParameterizedType parameterizedType) {
-                Type[] typeArguments = parameterizedType.getActualTypeArguments();
-                if (typeArguments.length >= 1 && typeArguments[0] instanceof Class) {
-                    return (Class<?>) typeArguments[0];
-                }
-            }
+    private Class<?> getEntityType(JpaRepository<? extends Product, Long> repository) {
+        Class<?>[] typeArguments = GenericTypeResolver.resolveTypeArguments(repository.getClass(), JpaRepository.class);
+        if (typeArguments != null && typeArguments.length >= 1) {
+            return typeArguments[0];
         }
         return null;
     }
     
     private ProductType getProductType(Class<?> entityType) {
         try {
-            Field enumField = entityType.getDeclaredField("name");
-            return ProductType.valueOf(enumField.getName().toUpperCase());
-        } catch (NoSuchFieldException | IllegalArgumentException e) {
+            String enumName = entityType.getSimpleName().toUpperCase();
+            return ProductType.valueOf(enumName);
+        } catch (IllegalArgumentException e) {
             return null;
         }
     }

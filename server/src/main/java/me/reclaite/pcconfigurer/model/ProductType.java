@@ -9,6 +9,6 @@ public enum ProductType {
     POWERSUPPLY,
     STORAGE,
     COOLER,
-    CASE
+    COMPUTERCASE
     
 }

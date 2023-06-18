@@ -10,7 +10,7 @@ public class ProductInfo {
     
     private Long id;
     
-    private ProductType type;
+    private ProductType productType;
     
     private List<String> images;
     

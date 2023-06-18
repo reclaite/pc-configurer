@@ -1,10 +1,10 @@
 package me.reclaite.pcconfigurer.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.reclaite.pcconfigurer.model.ComputerCase;
+import me.reclaite.pcconfigurer.model.PowerSupply;
 import me.reclaite.pcconfigurer.model.Product;
 import me.reclaite.pcconfigurer.model.UserInfo;
-import me.reclaite.pcconfigurer.service.ComputerCaseService;
+import me.reclaite.pcconfigurer.service.PowerSupplyService;
 import me.reclaite.pcconfigurer.service.ComponentService;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -21,25 +21,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/case")
+@RequestMapping("/powersupply")
 @RequiredArgsConstructor
-public class CaseController {
+public class PowerSupplyController {
     
     private final ComponentService componentService;
-    private final ComputerCaseService computerCaseService;
+    private final PowerSupplyService powerSupplyService;
     
     @GetMapping
-    public List<ComputerCase> getAllCases() {
-        return computerCaseService.getComputerCaseRepository().findAll();
+    public List<PowerSupply> getAllPowerSupplies() {
+        return powerSupplyService.getPowerSupplyRepository().findAll();
     }
     
     @PostMapping("/filtered")
-    public List<ComputerCase> getFilteredCases(@RequestBody UserInfo userInfo) {
+    public List<PowerSupply> getFilteredPowerSupplies(@RequestBody UserInfo userInfo) {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
-        return computerCaseService.getComputerCaseRepository().findAll().stream().filter(
-            aCase -> {
+        return powerSupplyService.getPowerSupplyRepository().findAll().stream().filter(
+            powerSupply -> {
                 for (Product product : products) {
-                    if (!product.isCompatible(userInfo, aCase)) {
+                    if (!product.isCompatible(userInfo, powerSupply)) {
                         return false;
                     }
                 }
@@ -49,28 +49,27 @@ public class CaseController {
     }
     
     @GetMapping("/{id}")
-    public ComputerCase getCaseById(@PathVariable Long id) {
-        return computerCaseService.getComputerCaseRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("Case not found with id " + id));
+    public PowerSupply getPowerSupplyById(@PathVariable Long id) {
+        return powerSupplyService.getPowerSupplyRepository().findById(id).orElseThrow(() -> new ResourceNotFoundException("PowerSupply not found with id " + id));
     }
     
     @PostMapping
-    public ComputerCase createCase(@RequestBody ComputerCase cpu) {
-        return computerCaseService.getComputerCaseRepository().save(cpu);
+    public PowerSupply createPowerSupply(@RequestBody PowerSupply cpu) {
+        return powerSupplyService.getPowerSupplyRepository().save(cpu);
     }
     
     @PutMapping("/{id}")
-    public ComputerCase updateCase(@PathVariable Long id, @RequestBody ComputerCase cpuDetails) {
-        return computerCaseService.updateCase(id, cpuDetails);
+    public PowerSupply updatePowerSupply(@PathVariable Long id, @RequestBody PowerSupply cpuDetails) {
+        return powerSupplyService.updatePowerSupply(id, cpuDetails);
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCase(@PathVariable Long id) {
+    public ResponseEntity<?> deletePowerSupply(@PathVariable Long id) {
         try {
-            computerCaseService.deleteCase(id);
+            powerSupplyService.deletePowerSupply(id);
         } catch (ResourceNotFoundException exception) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
     }
-    
 }

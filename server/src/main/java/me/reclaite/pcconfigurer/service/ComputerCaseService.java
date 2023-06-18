@@ -3,23 +3,23 @@ package me.reclaite.pcconfigurer.service;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import me.reclaite.pcconfigurer.model.ComputerCase;
-import me.reclaite.pcconfigurer.repository.CaseRepository;
+import me.reclaite.pcconfigurer.repository.ComputerCaseRepository;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 @Getter
 @AllArgsConstructor
-public class CaseService {
+public class ComputerCaseService {
     
-    private final CaseRepository caseRepository;
+    private final ComputerCaseRepository computerCaseRepository;
     
     public ComputerCase createCase(ComputerCase cpu) {
-        return caseRepository.save(cpu);
+        return computerCaseRepository.save(cpu);
     }
     
     public ComputerCase updateCase(Long id, ComputerCase computerCaseDetails) {
-        ComputerCase updatedComputerCase = caseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Case not found with id " + id));
+        ComputerCase updatedComputerCase = computerCaseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Case not found with id " + id));
         
         updatedComputerCase.setTitle(computerCaseDetails.getTitle());
         updatedComputerCase.setPrice(computerCaseDetails.getPrice());
@@ -27,12 +27,12 @@ public class CaseService {
         updatedComputerCase.setImages(computerCaseDetails.getImages());
         updatedComputerCase.setOtherSpecifications(computerCaseDetails.getOtherSpecifications());
         
-        return caseRepository.save(updatedComputerCase);
+        return computerCaseRepository.save(updatedComputerCase);
     }
     
     public ComputerCase deleteCase(Long id) {
-        ComputerCase computerCase = caseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Case not found with id " + id));
-        caseRepository.delete(computerCase);
+        ComputerCase computerCase = computerCaseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Case not found with id " + id));
+        computerCaseRepository.delete(computerCase);
         return computerCase;
     }
     

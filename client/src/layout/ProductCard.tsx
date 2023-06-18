@@ -9,11 +9,9 @@ interface ProductProps {
 
 async function getImages(product: ProductInfo): Promise<Array<string>> {
     try {
-        const response = await fetchPost('/images/get', product);
-
-        return response.data.map((image: ArrayBuffer) => {
-            const blob = new Blob([image], {type: 'image/jpeg'});
-            return URL.createObjectURL(blob);
+        const response = await fetchPost('/image/get', product);
+        return response.data.map((imageUrl: string) => {
+            return `data:image/jpeg;base64,${imageUrl}`;
         });
     } catch (error) {
         console.error('Ошибка при получении картинок:', error);

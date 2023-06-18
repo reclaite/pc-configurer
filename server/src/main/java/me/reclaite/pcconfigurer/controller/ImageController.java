@@ -4,13 +4,11 @@ import lombok.RequiredArgsConstructor;
 import me.reclaite.pcconfigurer.component.ProductRepositoryProvider;
 import me.reclaite.pcconfigurer.model.Product;
 import me.reclaite.pcconfigurer.model.ProductInfo;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -32,15 +31,15 @@ public class ImageController {
     private final ProductRepositoryProvider repositoryProvider;
     
     @PostMapping("/image/get")
-    public ResponseEntity<List<byte[]>> getImage(@RequestBody ProductInfo productInfo) {
-        Product product = repositoryProvider.getRepository(productInfo.getType()).findById(productInfo.getId()).orElse(null);
+    public ResponseEntity<List<String>> getImage(@RequestBody ProductInfo productInfo) {
+        Product product = repositoryProvider.getRepository(productInfo.getProductType()).findById(productInfo.getId()).orElse(null);
         if (product == null) {
-            return null;
+            return ResponseEntity.notFound().build();
         }
         
         try {
-            List<byte[]> images = new ArrayList<>();
-    
+            List<String> imageUrls = new ArrayList<>();
+            
             for (String imagePath : product.getImages()) {
                 File file = new File(imagePath);
                 FileInputStream fis = new FileInputStream(file);
@@ -48,16 +47,14 @@ public class ImageController {
                 byte[] imageBytes = new byte[(int) file.length()];
                 fis.read(imageBytes);
                 fis.close();
-        
-                images.add(imageBytes);
+                
+                String imageUrl = Base64.getEncoder().encodeToString(imageBytes);
+                imageUrls.add(imageUrl);
             }
             
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG);
-        
-            return new ResponseEntity<>(images, headers, HttpStatus.OK);
+            return ResponseEntity.ok(imageUrls);
         } catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
     
@@ -85,7 +82,7 @@ public class ImageController {
             fos.write(imageBytes);
             fos.close();
             
-            CrudRepository<Product, Long> repository = repositoryProvider.getRepository(productInfo.getType());
+            JpaRepository<Product, Long> repository = (JpaRepository<Product, Long>) repositoryProvider.getRepository(productInfo.getProductType());
             Product product = repository.findById(productInfo.getId()).orElseThrow(IOException::new);
             List<String> images = product.getImages();
             if (images == null) {
@@ -93,7 +90,7 @@ public class ImageController {
             }
             images.add(filePath);
             repository.save(product);
-    
+            
             return ResponseEntity.ok("Image uploaded successfully!");
         } catch (IOException e) {
             e.printStackTrace();

@@ -28,6 +28,8 @@ public class Product {
     @ElementCollection
     private Map<String, String> otherSpecifications;
     
+    private ProductType productType;
+    
     private ConfigurationType configurationType;
     
     public boolean isCompatible(UserInfo userInfo, Product product) {

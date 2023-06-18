@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.reclaite.pcconfigurer.model.Product;
 import me.reclaite.pcconfigurer.model.ProductInfo;
-import me.reclaite.pcconfigurer.model.ProductType;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class ComponentService {
     private final int pageLimit = 50;
     
     private final CPUService cpuService;
-    private final CaseService caseService;
+    private final ComputerCaseService computerCaseService;
     private final CoolerService coolerService;
     private final MemoryService memoryService;
     private final MotherboardService motherboardService;
@@ -40,7 +39,7 @@ public class ComponentService {
                 case "cooler" ->
                     products.add(coolerService.getCoolerRepository().findById(info.getId()).orElse(null));
                 case "case" ->
-                    products.add(caseService.getCaseRepository().findById(info.getId()).orElse(null));
+                    products.add(computerCaseService.getComputerCaseRepository().findById(info.getId()).orElse(null));
                 case "memory" ->
                     products.add(memoryService.getMemoryRepository().findById(info.getId()).orElse(null));
                 case "motherboard" ->
