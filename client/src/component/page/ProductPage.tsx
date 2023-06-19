@@ -45,8 +45,9 @@ const ProductPage = () => {
             });
     }, [product]);
 
-    const handleSelect = (selectedIndex: number) => {
+    const handleSelect = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, selectedIndex: number) => {
         setActiveIndex(selectedIndex);
+        event.preventDefault();
     };
 
     return (
@@ -81,7 +82,7 @@ const ProductPage = () => {
                                     href="#carouselExampleIndicators"
                                     role="button"
                                     data-bs-slide="prev"
-                                    onClick={() => handleSelect((activeIndex - 1 + images.length) % images.length)}
+                                    onClick={(event) => handleSelect(event, (activeIndex - 1 + images.length) % images.length)}
                                 >
                                     <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span className="visually-hidden">Previous</span>
@@ -91,7 +92,7 @@ const ProductPage = () => {
                                     href="#carouselExampleIndicators"
                                     role="button"
                                     data-bs-slide="next"
-                                    onClick={() => handleSelect((activeIndex + 1) % images.length)}
+                                    onClick={(event) => handleSelect(event, (activeIndex + 1) % images.length)}
                                 >
                                     <span className="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span className="visually-hidden">Next</span>
