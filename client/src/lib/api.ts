@@ -1,4 +1,5 @@
 import axios from "axios";
+import {Product} from "./Model";
 
 let cachedToken = localStorage.getItem('at') || ''
 
@@ -42,14 +43,14 @@ export const fetchPost = async (path: string, data = {}, options: ApiRequestInit
     return axios.post(url, data);
 }
 
-export const setToken = (token?: string) => {
-    cachedToken = token || ''
-    if (token)
-        localStorage.setItem('at', token)
-    else
-        localStorage.removeItem('at')
-}
-
-export const getToken = (): string => {
-    return cachedToken
+export async function getImages(product: Product): Promise<Array<string>> {
+    try {
+        const response = await fetchPost('/image/get', product);
+        return response.data.map((imageUrl: string) => {
+            return `data:image/jpeg;base64,${imageUrl}`;
+        });
+    } catch (error) {
+        console.error('Ошибка при получении картинок:', error);
+        return [];
+    }
 }

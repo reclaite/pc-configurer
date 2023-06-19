@@ -1,5 +1,7 @@
+import {Product} from "./Model";
+
 export interface UserInfo {
-    selected: { [key: string]: ProductInfo },
+    selected: { [key: string]: Product },
     configurationType: ConfigurationType,
 }
 
@@ -8,14 +10,15 @@ export interface ConfigurationType {
     title: string
 }
 
-export interface ProductInfo {
-    id: number,
-    type: ProductType,
-    images: string[],
-    title: string,
-    price: number,
-    otherSpecifications: Map<string, string>,
-}
+
+// export interface ProductInfo {
+//     id: number,
+//     type: ProductType,
+//     images: string[],
+//     title: string,
+//     price: number,
+//     otherSpecifications: Map<string, string>,
+// }
 
 export enum ProductType {
     cpu = "Процессор",
@@ -30,7 +33,7 @@ export enum ProductType {
 
 export function getUser(): UserInfo {
     const storedUser = localStorage.getItem('user');
-    return storedUser ? JSON.parse(storedUser) : {selected: new Map<ProductType, ProductInfo>()};
+    return storedUser ? JSON.parse(storedUser) : {selected: new Map<ProductType, Product>()};
 }
 
 export function saveUser(user: UserInfo) {

@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
-import {getUser, ProductInfo, ProductType} from "../../lib/PcApp";
+import {getUser, ProductType} from "../../lib/PcApp";
 import {fetchGet} from "../../lib/api";
 import OuterContainer from "../../layout/OuterContainer";
 import ProductCard from "../../layout/ProductCard";
 import Pagination from "../../layout/Pagination";
+import {Product} from "../../lib/Model";
 
 const ComponentsViewPage: React.FC = () => {
     const navigate = useNavigate();
@@ -53,7 +54,7 @@ const ComponentsViewPage: React.FC = () => {
                 <h1>Доступные компоненты: <b>{productType}</b></h1>
                 <hr className="my-4"></hr>
                 <div className="d-flex justify-content-start flex-wrap gap-2">
-                    {products.map((product: ProductInfo) => (
+                    {products.map((product: Product) => (
                         <ProductCard productType={category as string} product={product}/>
                     ))}
                 </div>

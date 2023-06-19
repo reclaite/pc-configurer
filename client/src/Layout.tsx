@@ -12,6 +12,7 @@ import ComponentsPage from "./component/page/ComponentsPage";
 import ComponentsViewPage from "./component/page/ComponentsViewPage";
 import BuildPage from "./component/page/BuildPage";
 import ShowBuildPage from "./component/page/ShowBuildPage";
+import ProductPage from "./component/page/ProductPage";
 
 const Layout: React.FC = () => {
     return (
@@ -24,6 +25,7 @@ const Layout: React.FC = () => {
                     <Route path="/about" Component={AboutPage}/>
                     <Route path="/build" Component={BuildPage}/>
                     <Route path="/show" Component={ShowBuildPage}/>
+                    <Route path="/view/:category/:id" Component={ProductPage}/>
                     <Route path="/select/:category" Component={ProductListPage}/>
                     <Route path="/components" Component={ComponentsPage}/>
                     <Route path="/components/:category" Component={ComponentsViewPage}/>

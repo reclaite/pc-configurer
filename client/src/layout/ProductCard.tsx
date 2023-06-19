@@ -1,31 +1,26 @@
 import React, {useEffect, useState} from 'react';
-import {getUser, ProductInfo, saveUser} from "../lib/PcApp";
-import {fetchPost} from "../lib/api";
+import {getUser, saveUser} from "../lib/PcApp";
+import {getImages} from "../lib/api";
+import {Product} from "../lib/Model";
+import {useNavigate} from "react-router-dom";
 
 interface ProductProps {
     productType: string,
-    product: ProductInfo
-}
-
-async function getImages(product: ProductInfo): Promise<Array<string>> {
-    try {
-        const response = await fetchPost('/image/get', product);
-        return response.data.map((imageUrl: string) => {
-            return `data:image/jpeg;base64,${imageUrl}`;
-        });
-    } catch (error) {
-        console.error('Ошибка при получении картинок:', error);
-        return [];
-    }
+    product: Product
 }
 
 const ProductCard: React.FC<ProductProps> = (props) => {
     const user = getUser();
+    const navigate = useNavigate();
     const [images, setImages] = useState<string[]>([]);
 
     const handleClick: React.MouseEventHandler<HTMLButtonElement> = () => {
         user.selected[props.productType] = props.product;
         saveUser(user)
+    };
+
+    const openProduct: React.MouseEventHandler<HTMLDivElement> = () => {
+        navigate(`/view/${props.product.productType.toLowerCase()}/${props.product.id}`)
     };
 
     useEffect(() => {
@@ -36,12 +31,13 @@ const ProductCard: React.FC<ProductProps> = (props) => {
             .catch((error) => {
                 console.error('Ошибка:', error);
             });
-    }, [props.product.images]);
+    }, [props.product, props.product.images]);
 
     const image = images.length > 0 ? images[0] : "https://vimeworld.com/images/fluidicon.png";
 
     return (
-        <div key={props.product.id} className="col-md-2 col-5 card mb-2">
+        <div role="button" onClick={openProduct} key={props.product.id}
+             className="col-md-4 col-sm-5 col-lg-3 card mb-2">
             <div className="w-50 mx-auto mt-1">
                 <img
                     src={image}

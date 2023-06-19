@@ -3,8 +3,9 @@ import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import OuterContainer from "../../layout/OuterContainer";
 import {fetchPost} from "../../lib/api";
 import Pagination from "../../layout/Pagination";
-import {getUser, ProductInfo, ProductType} from "../../lib/PcApp";
+import {getUser, ProductType} from "../../lib/PcApp";
 import ProductCard from "../../layout/ProductCard";
+import {Product} from "../../lib/Model";
 
 const pageLimit = 50;
 
@@ -61,7 +62,7 @@ const ProductListPage: React.FC = () => {
                 {showData ? (
                     <>
                         <div className="d-flex ml-2 gap-2">
-                            {products.map((product: ProductInfo) => (
+                            {products.map((product: Product) => (
                                 <ProductCard productType={category as string} product={product}/>
                             ))}
                         </div>
