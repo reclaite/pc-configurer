@@ -1,20 +1,55 @@
 package me.reclaite.pcconfigurer.parser;
 
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import me.reclaite.pcconfigurer.component.ProductRepositoryProvider;
+import me.reclaite.pcconfigurer.model.Product;
+import me.reclaite.pcconfigurer.model.ProductType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 @Getter
 @Service
 @RequiredArgsConstructor
 public abstract class Parser {
     
+    @Autowired
+    private ProductRepositoryProvider repositoryProvider;
+    
     private final ParserType parserType;
     
-    public abstract Map<String, String> getMatchedProducts(String productName);
+    private final Map<ProductType, Function<Map<String, Object>, ? extends Product>> productMap = new HashMap<>();
     
-    public abstract ParsedProductInfo getProductInfo(String productUrl);
+    @PostConstruct
+    public abstract void processParser();
+    
+    public abstract Map<String, Object> getMatchedProduct(ProductType productType, String productName);
+    
+    public Product getProduct(ProductType productType, Map<String, Object> productMap) {
+        return createProduct(productType, productMap);
+    }
+    
+    public void registerParser(ProductType type, Function<Map<String, Object>, ? extends Product> consumer) {
+        productMap.put(type, consumer);
+    }
+    
+    public Product createProduct(ProductType productType, Map<String, Object> productMap) {
+        Function<Map<String, Object>, ? extends Product> function = this.productMap.get(productType);
+        if (function == null) {
+            return null;
+        }
+        
+        Product product = function.apply(productMap);
+        JpaRepository<Product, Long> repository = (JpaRepository<Product, Long>) repositoryProvider.getRepository(productType);
+        repository.save(product);
+        
+        return product;
+    }
     
 }

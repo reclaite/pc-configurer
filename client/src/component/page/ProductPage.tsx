@@ -52,11 +52,12 @@ const ProductPage = () => {
 
     return (
         <OuterContainer>
+            <h1>Информация о комплектующем</h1>
             <hr className="my-4"></hr>
             {product != null ?
                 <>
-                    <div className="row">
-                        <div className="col-6">
+                    <div className="row mx-auto">
+                        <div className="col-10 col-md-6 mx-auto mb-4">
                             <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
                                 <ol className="carousel-indicators">
                                     {images.map((_, index) => (
@@ -99,9 +100,24 @@ const ProductPage = () => {
                                 </a>
                             </div>
                         </div>
-                        <div className="col-4">
+                        <div className="col-12 col-md-6">
                             <h2>{product.title}</h2>
-                            <h3>Цена: {product.price}</h3>
+                            <h5>Цена: {product.price} ₽</h5>
+                            <hr className="my-4"></hr>
+                            {Object.entries(product.otherSpecifications).map(([key, value]) => (
+                                <p className="mb-0" key={key}>
+                                    <strong>{key}: </strong>
+                                    {value}
+                                </p>
+                            ))}
+                            <p className="mb-0" key="test">
+                                <strong>Сокет: </strong>
+                                Говно
+                            </p>
+                            <p key="test">
+                                <strong>Жопа: </strong>
+                                Всегда есть жопа
+                            </p>
                         </div>
                     </div>
                 </>

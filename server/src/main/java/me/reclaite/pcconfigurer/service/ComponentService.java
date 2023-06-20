@@ -3,7 +3,6 @@ package me.reclaite.pcconfigurer.service;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.reclaite.pcconfigurer.model.Product;
-import me.reclaite.pcconfigurer.model.ProductInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,23 +24,21 @@ public class ComponentService {
     private final StorageService storageService;
     private final VideoCardService videoCardService;
     
-    public List<Product> getSelectedProducts(Map<String, ProductInfo> selectedTypes) {
+    public List<Product> getSelectedProducts(Map<String, Product> selectedTypes) {
         List<Product> products = new ArrayList<>();
         
         if (selectedTypes == null || selectedTypes.isEmpty()) {
             return products;
         }
         
-        for (Map.Entry<String, ProductInfo> entry : selectedTypes.entrySet()) {
-            final ProductInfo info = entry.getValue();
+        for (Map.Entry<String, Product> entry : selectedTypes.entrySet()) {
+            final Product info = entry.getValue();
             switch (entry.getKey()) {
                 case "cpu" -> products.add(cpuService.getCpuRepository().findById(info.getId()).orElse(null));
-                case "cooler" ->
-                    products.add(coolerService.getCoolerRepository().findById(info.getId()).orElse(null));
+                case "cooler" -> products.add(coolerService.getCoolerRepository().findById(info.getId()).orElse(null));
                 case "case" ->
                     products.add(computerCaseService.getComputerCaseRepository().findById(info.getId()).orElse(null));
-                case "memory" ->
-                    products.add(memoryService.getMemoryRepository().findById(info.getId()).orElse(null));
+                case "memory" -> products.add(memoryService.getMemoryRepository().findById(info.getId()).orElse(null));
                 case "motherboard" ->
                     products.add(motherboardService.getMotherboardRepository().findById(info.getId()).orElse(null));
                 case "storage" ->
@@ -50,7 +47,7 @@ public class ComponentService {
                     products.add(videoCardService.getVideoCardRepository().findById(info.getId()).orElse(null));
             }
         }
-    
+        
         System.out.println(products);
         return products;
     }

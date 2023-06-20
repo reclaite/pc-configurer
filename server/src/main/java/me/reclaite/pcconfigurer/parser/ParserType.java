@@ -1,14 +1,12 @@
 package me.reclaite.pcconfigurer.parser;
 
-import me.reclaite.pcconfigurer.parser.impl.DNSParser;
-import me.reclaite.pcconfigurer.parser.impl.MVideoParser;
+import me.reclaite.pcconfigurer.parser.impl.EldoradoParser;
 
 import java.util.function.Function;
 
 public enum ParserType {
     
-    DNS(DNSParser::new),
-    MVIDEO(MVideoParser::new);
+    ELDORADO(EldoradoParser::new);
     
     private static final ParserType[] TYPES = ParserType.values();
     

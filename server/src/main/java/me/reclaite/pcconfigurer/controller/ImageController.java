@@ -3,11 +3,7 @@ package me.reclaite.pcconfigurer.controller;
 import lombok.RequiredArgsConstructor;
 import me.reclaite.pcconfigurer.component.ProductRepositoryProvider;
 import me.reclaite.pcconfigurer.model.Product;
-import me.reclaite.pcconfigurer.model.ProductInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +27,8 @@ public class ImageController {
     private final ProductRepositoryProvider repositoryProvider;
     
     @PostMapping("/image/get")
-    public ResponseEntity<List<String>> getImage(@RequestBody ProductInfo productInfo) {
+    public ResponseEntity<List<String>> getImage(@RequestBody Product productInfo) {
+        System.out.println(productInfo);
         Product product = repositoryProvider.getRepository(productInfo.getProductType()).findById(productInfo.getId()).orElse(null);
         if (product == null) {
             return ResponseEntity.notFound().build();
@@ -59,7 +56,7 @@ public class ImageController {
     }
     
     @PostMapping("/image/upload")
-    public ResponseEntity<?> uploadImage(String imageUrl, ProductInfo productInfo) {
+    public ResponseEntity<?> uploadImage(String imageUrl, Product productInfo) {
         String fileName = String.format("%s.jpg", productInfo.getId());
         String filePath = String.format("%s/%s", UPLOAD_DIR, fileName);
         

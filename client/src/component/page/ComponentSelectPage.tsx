@@ -9,7 +9,7 @@ import {Product} from "../../lib/Model";
 
 const pageLimit = 50;
 
-const ProductListPage: React.FC = () => {
+const ComponentSelectPage: React.FC = () => {
     const navigate = useNavigate();
 
     const {category} = useParams();
@@ -61,9 +61,9 @@ const ProductListPage: React.FC = () => {
                 <hr className="my-4"></hr>
                 {showData ? (
                     <>
-                        <div className="d-flex ml-2 gap-2">
+                        <div className="d-flex flex-wrap ml-2 gap-2">
                             {products.map((product: Product) => (
-                                <ProductCard productType={category as string} product={product}/>
+                                <ProductCard productType={category as string} product={product} showSelect={true}/>
                             ))}
                         </div>
                         <div className="pagination justify-content-center">
@@ -83,4 +83,4 @@ const ProductListPage: React.FC = () => {
     );
 };
 
-export default ProductListPage;
+export default ComponentSelectPage;

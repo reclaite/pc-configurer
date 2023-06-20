@@ -30,7 +30,7 @@ public class CPU extends Product {
         }
         
         if (product instanceof Cooler) {
-            return socket.equals(((Cooler) product).getSocket());
+            return ((Cooler) product).getSocket().contains(socket);
         }
         
         return super.isCompatible(userInfo, product);

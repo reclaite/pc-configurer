@@ -1,15 +1,19 @@
 package me.reclaite.pcconfigurer.model;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 public class Cooler extends Product {
     
-    private String socket;
+    @ElementCollection
+    private List<String> socket;
     
     private Integer rpm;
     
@@ -20,11 +24,11 @@ public class Cooler extends Product {
     @Override
     public boolean isCompatible(UserInfo userInfo, Product product) {
         if (product instanceof CPU) {
-            return socket.equals(((CPU) product).getSocket());
+            return socket.contains(((CPU) product).getSocket());
         }
         
         if (product instanceof Motherboard) {
-            return socket.equals(((Motherboard) product).getSocket());
+            return socket.contains(((Motherboard) product).getSocket());
         }
         
         return super.isCompatible(userInfo, product);

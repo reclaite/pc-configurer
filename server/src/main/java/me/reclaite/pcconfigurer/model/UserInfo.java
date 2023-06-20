@@ -9,7 +9,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserInfo {
     
-    private Map<String, ProductInfo> selected;
+    private Map<String, Product> selected;
     private ConfigurationType.DTO configurationType;
     
 }

@@ -55,7 +55,7 @@ const ComponentsViewPage: React.FC = () => {
                 <hr className="my-4"></hr>
                 <div className="d-flex justify-content-start flex-wrap gap-2">
                     {products.map((product: Product) => (
-                        <ProductCard productType={category as string} product={product}/>
+                        <ProductCard productType={category as string} product={product} showSelect={false}/>
                     ))}
                 </div>
                 <div className="pagination justify-content-center">
