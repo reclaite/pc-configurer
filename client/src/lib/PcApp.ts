@@ -10,16 +10,6 @@ export interface ConfigurationType {
     title: string
 }
 
-
-// export interface ProductInfo {
-//     id: number,
-//     type: ProductType,
-//     images: string[],
-//     title: string,
-//     price: number,
-//     otherSpecifications: Map<string, string>,
-// }
-
 export enum ProductType {
     cpu = "Процессор",
     motherboard = "Материнская плата",
@@ -38,4 +28,8 @@ export function getUser(): UserInfo {
 
 export function saveUser(user: UserInfo) {
     localStorage.setItem('user', JSON.stringify(user))
+}
+
+export function clearUser() {
+    localStorage.setItem('user', JSON.stringify({selected: new Map<ProductType, Product>()}))
 }

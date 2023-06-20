@@ -1,9 +1,10 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
-import {fetchPost} from "../../lib/api";
+import {fetchGet, fetchPost} from "../../lib/api";
+import {ProductType} from "../../lib/PcApp";
 
 const AddComponentForm = () => {
     const [componentType, setComponentType] = useState('');
-    const [componentData, setComponentData] = useState({});
+    const [name, setName] = useState("")
 
     const handleComponentTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setComponentType(event.target.value);
@@ -11,57 +12,27 @@ const AddComponentForm = () => {
 
     const handleComponentDataChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {name, value} = event.target;
-        setComponentData((prevData) => ({...prevData, [name]: value}));
+        setName(value);
     };
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        fetchPost("/" + componentType, componentData)
+        fetchGet("/parser/" + componentType.toUpperCase() + "?name=" + name).then(r => console.log(r))
         // отправку данных на сервер или выполнить другую логику
-        console.log(componentData);
+        console.log(name);
     };
 
     const renderForm = () => {
-        switch (componentType) {
-            case 'cpu':
-                return (
-                    <div>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Название процессора"
-                            onChange={handleComponentDataChange}
-                        />
-                        <input
-                            type="number"
-                            name="price"
-                            placeholder="Цена"
-                            onChange={handleComponentDataChange}
-                        />
-                        {/* Дополнительные поля для процессора */}
-                    </div>
-                );
-            case 'motherboard':
-                return (
-                    <div>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Название материнской платы"
-                            onChange={handleComponentDataChange}
-                        />
-                        <input
-                            type="number"
-                            name="price"
-                            placeholder="Цена"
-                            onChange={handleComponentDataChange}
-                        />
-                        {/* Дополнительные поля для материнской платы */}
-                    </div>
-                );
-            default:
-                return null;
-        }
+        return (
+            <div>
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Название"
+                    onChange={handleComponentDataChange}
+                />
+            </div>
+        )
     };
 
     return (
@@ -70,6 +41,12 @@ const AddComponentForm = () => {
                 <option value="">Выберите тип комплектующего</option>
                 <option value="cpu">Процессор</option>
                 <option value="motherboard">Материнская плата</option>
+                <option value="cooler">Охлаждение</option>
+                <option value="memory">RAM</option>
+                <option value="videocard">GPU</option>
+                <option value="powersupply">БП</option>
+                <option value="storage">Накопитель</option>
+                <option value="case">Корпус</option>
                 {/* Другие варианты комплектующих */}
             </select>
             {renderForm()}

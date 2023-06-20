@@ -47,7 +47,7 @@ export async function getImages(product: Product): Promise<Array<string>> {
     try {
         const response = await fetchPost('/image/get', product);
         return response.data.map((imageUrl: string) => {
-            return `data:image/jpeg;base64,${imageUrl}`;
+            return `${imageUrl}`; // data:image/jpeg;base64,
         });
     } catch (error) {
         console.error('Ошибка при получении картинок:', error);

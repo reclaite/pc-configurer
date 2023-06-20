@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {CSSProperties, useEffect, useState} from 'react';
 import {getUser, saveUser} from "../lib/PcApp";
 import {getImages} from "../lib/api";
 import {Product} from "../lib/Model";
@@ -43,12 +43,12 @@ const ProductCard: React.FC<ProductProps> = (props) => {
 
     return (
         <div key={props.product.id}
-             className="col-md-4 col-sm-5 col-lg-3 card mb-2">
+             className="col-md-4 col-sm-5 col-lg-2 card mb-2">
             <div role="button" onClick={openProduct}>
-                <div className="w-50 mx-auto mt-1">
+                <div className="w-50 mx-auto mt-1 align-content-center">
                     <img
                         src={image}
-                        className="mx-auto img-fluid"
+                        className="mx-auto card-img-top"
                         alt={props.product.title}
                     />
                 </div>

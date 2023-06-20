@@ -50,6 +50,8 @@ const ProductPage = () => {
         event.preventDefault();
     };
 
+    console.log(images);
+
     return (
         <OuterContainer>
             <h1>Информация о комплектующем</h1>
@@ -85,7 +87,7 @@ const ProductPage = () => {
                                     data-bs-slide="prev"
                                     onClick={(event) => handleSelect(event, (activeIndex - 1 + images.length) % images.length)}
                                 >
-                                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span className="carousel-control-prev-icon bg-black rounded p-2" aria-hidden="true"></span>
                                     <span className="visually-hidden">Previous</span>
                                 </a>
                                 <a
@@ -95,14 +97,14 @@ const ProductPage = () => {
                                     data-bs-slide="next"
                                     onClick={(event) => handleSelect(event, (activeIndex + 1) % images.length)}
                                 >
-                                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span className="carousel-control-next-icon bg-black rounded p-2" aria-hidden="true"></span>
                                     <span className="visually-hidden">Next</span>
                                 </a>
                             </div>
                         </div>
                         <div className="col-12 col-md-6">
                             <h2>{product.title}</h2>
-                            <h5>Цена: {product.price} ₽</h5>
+                            <h5>Цена: {product.price} ₽ (MVideo)</h5>
                             <hr className="my-4"></hr>
                             {Object.entries(product.otherSpecifications).map(([key, value]) => (
                                 <p className="mb-0" key={key}>
@@ -110,14 +112,6 @@ const ProductPage = () => {
                                     {value}
                                 </p>
                             ))}
-                            <p className="mb-0" key="test">
-                                <strong>Сокет: </strong>
-                                Говно
-                            </p>
-                            <p key="test">
-                                <strong>Жопа: </strong>
-                                Всегда есть жопа
-                            </p>
                         </div>
                     </div>
                 </>

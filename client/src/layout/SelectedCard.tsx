@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {saveUser, UserInfo} from "../lib/PcApp";
 import {useNavigate} from "react-router-dom";
 import {getImages} from "../lib/api";
@@ -25,17 +25,20 @@ const SelectedCard: React.FC<SelectedCardProps> = ({user, title, type}) => {
         delete user.selected[type];
         saveUser(user);
         setSelectedUser(user);
+        window.location.reload();
     }
 
-    if (hasProduct) {
-        getImages(product)
-            .then((resultImages) => {
-                setImages(resultImages);
-            })
-            .catch((error) => {
-                console.error('Ошибка:', error);
-            });
-    }
+    useEffect(() => {
+        if (hasProduct) {
+            getImages(product)
+                .then((resultImages) => {
+                    setImages(resultImages);
+                })
+                .catch((error) => {
+                    console.error('Ошибка:', error);
+                });
+        }
+    }, [hasProduct, product]);
 
     const image = images.length > 0 ? images[0] : "/question.png";
 
@@ -54,8 +57,12 @@ const SelectedCard: React.FC<SelectedCardProps> = ({user, title, type}) => {
                     </thead>
                     <tbody>
                     <tr>
-                        <td><img src={image} alt={title} className="img-thumbnail col-8"></img></td>
-                        <td className="fw-bold col-7">{hasProduct ? product.title : "Не выбрано"}</td>
+                        <td><img src={image} alt={title} className="img-thumbnail col-8 col-lg-5"></img></td>
+                        <td className="fw-bold col-7">
+                            {hasProduct ?
+                                <a href={`view/${type}/${product.id}`} className="text-decoration-none">{product.title}</a>
+                            : "Не выбрано"}
+                        </td>
                         <td className="col-3">{hasProduct ? product.price + "₽" : "-"}</td>
                     </tr>
                     </tbody>

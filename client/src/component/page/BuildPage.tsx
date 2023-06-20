@@ -1,13 +1,26 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import OuterContainer from "../../layout/OuterContainer";
-import {ConfigurationType, getUser} from "../../lib/PcApp";
+import {clearUser, ConfigurationType, getUser, ProductType} from "../../lib/PcApp";
 import PurposeCard from "../../layout/PurposeCard";
 import {fetchGet} from "../../lib/api";
 import SelectedCard from "../../layout/SelectedCard";
+import {randomInt} from "crypto";
+
+interface CompleteBuild {
+    id: string,
+    title: string,
+    configurationType: ConfigurationType,
+    products: Map<ProductType, number>
+}
 
 const BuildPage: React.FC = () => {
-    const user = getUser();
+    const [user, setUser] = useState(getUser());
+    const [title, setTitle] = useState("");
+    const inputRef = useRef<HTMLInputElement>(null);
     const [configurationTypes, setConfigurationTypes] = useState([]);
+
+    const [saveConfig, setSaveConfig] = useState<boolean>(false);
+    const [showUrl, setShowUrl] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -44,20 +57,47 @@ const BuildPage: React.FC = () => {
         overallPrice += user.selected[selectedKey].price
     }
 
-    const copyText: React.MouseEventHandler<HTMLButtonElement> = () => {
-        // const inputRef = useRef<HTMLInputElement>(null);
+    const copyText = () => {
+        if (inputRef.current) {
+            inputRef.current.select();
+            document.execCommand("copy");
+        }
+    };
+
+    const clear: React.MouseEventHandler<HTMLButtonElement> = () => {
+        clearUser();
+        setUser(user);
+        window.location.reload();
+    };
+
+    const showSaveInfo = () => {
+        setSaveConfig(true);
+    };
+
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault(); // Предотвращает обновление страницы при отправке формы
+
+        // const completeBuild: CompleteBuild = {
+        //     id: "id",
+        //     title: name,
+        //     configurationType: configurationType,
+        //     products,
+        // };
         //
-        // if (inputRef.current) {
-        //     inputRef.current.select();
-        //     document.execCommand('copy');
+        // try {
+        //     const response = await fetchPost('/build/save', completeBuild);
+        //     navigate("/config/" + id);
+        //     console.log(response.data); // Обработка успешного ответа сервера
+        // } catch (error) {
+        //     console.error(error); // Обработка ошибок
         // }
-    }
+    };
 
     return (
         <OuterContainer>
             <div className="d-flex justify-content-between">
                 <h1 className="fw-bold">Выберите тип компонента</h1>
-                <button className="btn btn-danger">Очистить выбор</button>
+                <button className="btn btn-danger" onClick={clear}>Очистить выбор</button>
             </div>
             <hr className="my-4"></hr>
             <div className="d-flex flex-wrap justify-content-center gap-2">
@@ -72,15 +112,49 @@ const BuildPage: React.FC = () => {
                 <hr className="my-4"></hr>
                 <div className="card card-body my-2">
                     <p className="text-center">Общая стоимость комплектующих <b>{overallPrice} ₽</b></p>
-                    <button className="btn btn-primary col-md-3 mx-auto">Сохранить конфигурацию</button>
-                    <div className="card card-body mt-4 w-50 mx-auto">
-                        <p><b>Конфигурация успешно сохранена!</b> Вы можете поделиться ей с другими по данной ссылке:</p>
-                        <hr className="my-1"></hr>
-                        <div className="input-group mt-3">
-                            <input type="text" className="form-control" id="myInput" value="https://pcconfigurer.ru/config/8f56c9b214a9d6f78296e2daf6614fb5" readOnly />
-                            <button className="btn btn-primary" type="button" onClick={copyText}>Копировать</button>
-                        </div>
-                    </div>
+                    {!saveConfig ?
+                        <>
+                            <button onClick={showSaveInfo} className="btn btn-primary col-md-3 mx-auto">Сохранить
+                                конфигурацию
+                            </button>
+                        </> :
+                        <>
+                            <div className="card container mx-auto p-4 col-7">
+                                <h3>Сохранение конфигурации</h3>
+                                <hr className="my-4"></hr>
+                                <div className="mb-3 card-text">
+                                    <label htmlFor="title" className="form-label">Название конфигурации</label>
+                                    <input type="text" className="form-control" id="title" value={title}
+                                           onChange={e => setTitle(e.target.value)} required/>
+                                </div>
+                                <div className="w-50 mx-auto text-center">
+                                    <button onClick={handleSubmit} type="submit"
+                                            className="btn btn-primary mb-3">Сохранить
+                                    </button>
+                                </div>
+                            </div>
+                        </>
+                    }
+                    {
+                        showUrl ?
+                            <>
+                                <div className="card card-body mt-4 w-50 mx-auto">
+                                    <p><b>Конфигурация успешно сохранена!</b> Вы можете поделиться ей с другими по
+                                        данной ссылке:
+                                    </p>
+                                    <hr className="my-1"></hr>
+                                    <div className="input-group mt-3">
+                                        <input type="text" className="form-control" id="myInput" ref={inputRef}
+                                               value="https://pcconfigurer.ru/config/8f56c9b214a9d6f78296e2daf6614fb5"
+                                               readOnly/>
+                                        <button className="btn btn-primary" type="button"
+                                                onClick={copyText}>Копировать
+                                        </button>
+                                    </div>
+                                </div>
+                            </> :
+                            <></>
+                    }
                 </div>
             </div>
         </OuterContainer>
