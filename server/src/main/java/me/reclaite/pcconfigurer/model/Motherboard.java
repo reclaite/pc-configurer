@@ -27,18 +27,24 @@ public class Motherboard extends Product {
     
     @Override
     public boolean isCompatible(UserInfo userInfo, Product product) {
+        boolean flag = super.isCompatible(userInfo, product);
+        
         if (product instanceof CPU) {
-            return socket.equals(((CPU) product).getSocket());
+            flag = socket.equals(((CPU) product).getSocket());
         }
         
         if (product instanceof ComputerCase) {
-            return caseType.equals(((ComputerCase) product).getType());
+            flag = caseType.equals(((ComputerCase) product).getType());
         }
         
         if (product instanceof Memory) {
-            return supportedType.equals(((Memory) product).getType());
+            flag = supportedType.equals(((Memory) product).getType());
         }
         
-        return super.isCompatible(userInfo, product);
+        if (product instanceof Cooler) {
+            flag = ((Cooler) product).getSocket().contains(socket);
+        }
+        
+        return flag;
     }
 }

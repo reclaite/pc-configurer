@@ -28,31 +28,26 @@ public class ImageController {
     
     @PostMapping("/image/get")
     public ResponseEntity<List<String>> getImage(@RequestBody Product productInfo) {
-        System.out.println(productInfo);
         Product product = repositoryProvider.getRepository(productInfo.getProductType()).findById(productInfo.getId()).orElse(null);
         if (product == null) {
             return ResponseEntity.notFound().build();
         }
-        
-        try {
-            List<String> imageUrls = new ArrayList<>();
-            
-            for (String imagePath : product.getImages()) {
-                File file = new File(imagePath);
-                FileInputStream fis = new FileInputStream(file);
-                
-                byte[] imageBytes = new byte[(int) file.length()];
-                fis.read(imageBytes);
-                fis.close();
-                
-                String imageUrl = Base64.getEncoder().encodeToString(imageBytes);
-                imageUrls.add(imageUrl);
-            }
-            
-            return ResponseEntity.ok(imageUrls);
-        } catch (IOException e) {
-            return ResponseEntity.notFound().build();
-        }
+    
+        List<String> imageUrls = new ArrayList<>();
+    
+        //for (String imagePath : product.getImages()) {
+        //    File file = new File(imagePath);
+        //    FileInputStream fis = new FileInputStream(file);
+        //
+        //    byte[] imageBytes = new byte[(int) file.length()];
+        //    fis.read(imageBytes);
+        //    fis.close();
+        //
+        //    String imageUrl = Base64.getEncoder().encodeToString(imageBytes);
+        //    imageUrls.add(imageUrl);
+        //}
+    
+        return ResponseEntity.ok(product.getImages());
     }
     
     @PostMapping("/image/upload")

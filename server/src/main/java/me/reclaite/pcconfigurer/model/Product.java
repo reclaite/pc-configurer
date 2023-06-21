@@ -33,7 +33,7 @@ public class Product {
     private ConfigurationType configurationType;
     
     public boolean isCompatible(UserInfo userInfo, Product product) {
-        return userInfo.getConfigurationType().getName() == configurationType;
+        return true;
     }
     
 }

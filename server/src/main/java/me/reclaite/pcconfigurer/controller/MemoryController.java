@@ -40,11 +40,10 @@ public class MemoryController {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return memoryService.getMemoryRepository().findAll().stream().filter(
             memory -> {
-                int offset = (page - 1) * componentService.getPageLimit();
+                if (userInfo.getConfigurationType().getName() != memory.getConfigurationType()) {
+                    return false;
+                }
                 for (Product product : products) {
-                    if (offset-- >= 0) {
-                        continue;
-                    }
                     if (!product.isCompatible(userInfo, memory)) {
                         return false;
                     }

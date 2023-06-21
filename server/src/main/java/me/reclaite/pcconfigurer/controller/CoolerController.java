@@ -38,6 +38,9 @@ public class CoolerController {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return coolerService.getCoolerRepository().findAll().stream().filter(
             cooler -> {
+                if (userInfo.getConfigurationType().getName() != cooler.getConfigurationType()) {
+                    return false;
+                }
                 for (Product product : products) {
                     if (!product.isCompatible(userInfo, cooler)) {
                         return false;

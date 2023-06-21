@@ -38,6 +38,9 @@ public class CaseController {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return computerCaseService.getComputerCaseRepository().findAll().stream().filter(
             aCase -> {
+                if (userInfo.getConfigurationType().getName() != aCase.getConfigurationType()) {
+                    return false;
+                }
                 for (Product product : products) {
                     if (!product.isCompatible(userInfo, aCase)) {
                         return false;

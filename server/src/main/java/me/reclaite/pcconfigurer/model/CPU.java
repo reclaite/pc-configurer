@@ -25,14 +25,15 @@ public class CPU extends Product {
     
     @Override
     public boolean isCompatible(UserInfo userInfo, Product product) {
+        boolean flag = super.isCompatible(userInfo, product);
         if (product instanceof Motherboard) {
-            return socket.equals(((Motherboard) product).getSocket());
+            flag = socket.equals(((Motherboard) product).getSocket());
         }
         
         if (product instanceof Cooler) {
-            return ((Cooler) product).getSocket().contains(socket);
+            flag = ((Cooler) product).getSocket().contains(socket);
         }
-        
-        return super.isCompatible(userInfo, product);
+    
+        return flag;
     }
 }

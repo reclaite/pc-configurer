@@ -1,7 +1,5 @@
 package me.reclaite.pcconfigurer.parser;
 
-import me.reclaite.pcconfigurer.parser.impl.EldoradoParser;
-
 import java.util.function.Function;
 
 public enum ParserType {

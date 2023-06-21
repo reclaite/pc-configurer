@@ -39,6 +39,9 @@ public class MotherboardController {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return motherboardService.getMotherboardRepository().findAll().stream().filter(
             motherboard -> {
+                if (userInfo.getConfigurationType().getName() != motherboard.getConfigurationType()) {
+                    return false;
+                }
                 for (Product product : products) {
                     if (!product.isCompatible(userInfo, motherboard)) {
                         return false;

@@ -38,6 +38,9 @@ public class VideoCardController {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return videoCardService.getVideoCardRepository().findAll().stream().filter(
             videoCard -> {
+                if (userInfo.getConfigurationType().getName() != videoCard.getConfigurationType()) {
+                    return false;
+                }
                 for (Product product : products) {
                     if (!product.isCompatible(userInfo, videoCard)) {
                         return false;

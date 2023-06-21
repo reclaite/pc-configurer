@@ -23,14 +23,15 @@ public class Cooler extends Product {
     
     @Override
     public boolean isCompatible(UserInfo userInfo, Product product) {
+        boolean flag = super.isCompatible(userInfo, product);
         if (product instanceof CPU) {
-            return socket.contains(((CPU) product).getSocket());
+            flag = socket.contains(((CPU) product).getSocket());
         }
         
         if (product instanceof Motherboard) {
-            return socket.contains(((Motherboard) product).getSocket());
+            flag = socket.contains(((Motherboard) product).getSocket());
         }
         
-        return super.isCompatible(userInfo, product);
+        return flag;
     }
 }

@@ -15,15 +15,16 @@ public class PowerSupply extends Product {
     
     @Override
     public boolean isCompatible(UserInfo userInfo, Product product) {
+        boolean flag = super.isCompatible(userInfo, product);
         if (product instanceof ComputerCase) {
-            return caseType.equals(((ComputerCase) product).getType());
+            flag = caseType.equals(((ComputerCase) product).getType());
         }
         
         if (product instanceof Motherboard) {
-            return caseType.equals(((Motherboard) product).getCaseType());
+            flag = caseType.equals(((Motherboard) product).getCaseType());
         }
         
-        return super.isCompatible(userInfo, product);
+        return flag;
     }
     
 }

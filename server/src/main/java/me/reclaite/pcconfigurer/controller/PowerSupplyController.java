@@ -38,6 +38,9 @@ public class PowerSupplyController {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return powerSupplyService.getPowerSupplyRepository().findAll().stream().filter(
             powerSupply -> {
+                if (userInfo.getConfigurationType().getName() != powerSupply.getConfigurationType()) {
+                    return false;
+                }
                 for (Product product : products) {
                     if (!product.isCompatible(userInfo, powerSupply)) {
                         return false;

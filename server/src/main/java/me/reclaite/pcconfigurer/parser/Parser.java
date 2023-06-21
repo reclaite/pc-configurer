@@ -1,6 +1,5 @@
 package me.reclaite.pcconfigurer.parser;
 
-import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.reclaite.pcconfigurer.component.ProductRepositoryProvider;
@@ -26,7 +25,6 @@ public abstract class Parser {
     
     private final Map<ProductType, Function<Map<String, Object>, ? extends Product>> productMap = new HashMap<>();
     
-    @PostConstruct
     public abstract void processParser();
     
     public abstract Map<String, Object> getMatchedProduct(ProductType productType, String productName);
@@ -46,8 +44,7 @@ public abstract class Parser {
         }
         
         Product product = function.apply(productMap);
-        JpaRepository<Product, Long> repository = (JpaRepository<Product, Long>) repositoryProvider.getRepository(productType);
-        repository.save(product);
+        product.setProductType(productType);
         
         return product;
     }

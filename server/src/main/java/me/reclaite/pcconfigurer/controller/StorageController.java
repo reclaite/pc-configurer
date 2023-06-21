@@ -38,6 +38,9 @@ public class StorageController {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return storageService.getStorageRepository().findAll().stream().filter(
             storage -> {
+                if (userInfo.getConfigurationType().getName() != storage.getConfigurationType()) {
+                    return false;
+                }
                 for (Product product : products) {
                     if (!product.isCompatible(userInfo, storage)) {
                         return false;

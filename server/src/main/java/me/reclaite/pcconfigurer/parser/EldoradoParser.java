@@ -1,10 +1,7 @@
-package me.reclaite.pcconfigurer.parser.impl;
+package me.reclaite.pcconfigurer.parser;
 
-import me.reclaite.pcconfigurer.model.CPU;
-import me.reclaite.pcconfigurer.model.Cooler;
-import me.reclaite.pcconfigurer.model.Motherboard;
-import me.reclaite.pcconfigurer.model.Product;
-import me.reclaite.pcconfigurer.model.ProductType;
+import jakarta.annotation.PostConstruct;
+import me.reclaite.pcconfigurer.model.*;
 import me.reclaite.pcconfigurer.parser.Parser;
 import me.reclaite.pcconfigurer.parser.ParserType;
 import org.jsoup.Connection;
@@ -46,7 +43,7 @@ public class EldoradoParser extends Parser {
             if (images.size() > 0) {
                 cpu.setImages(images.stream().map(img -> "https://static.eldorado.ru" + img.get("url")).collect(Collectors.toList()));
             }
-            cpu.setPrice(Double.parseDouble(((String) json.get("price"))));
+            cpu.setPrice(((double) json.get("price")));
             cpu.setOtherSpecifications(
                 attributes
             );
@@ -64,13 +61,13 @@ public class EldoradoParser extends Parser {
                 .get("attributeNameToValueMap");
             
             cooler.setTitle(((String) json.get("name")).replace("Кулер для процессора ", ""));
-            cooler.setSocket(Arrays.asList(attributes.get("Сокет").toUpperCase().split(", ")));
+            cooler.setSocket(Arrays.asList(attributes.get("Socket").toUpperCase().split(", ")));
             
             List<Map<String, Object>> images = (List<Map<String, Object>>) json.get("images");
             if (images.size() > 0) {
                 cooler.setImages(images.stream().map(img -> "https://static.eldorado.ru" + img.get("url")).collect(Collectors.toList()));
             }
-            cooler.setPrice(Double.parseDouble(((String) json.get("price"))));
+            cooler.setPrice(((double) json.get("price")));
             cooler.setOtherSpecifications(
                 attributes
             );
@@ -93,14 +90,159 @@ public class EldoradoParser extends Parser {
                     return map1;
                 });
             
-            motherboard.setTitle(((String) json.get("name")).replace("Кулер для процессора ", ""));
+            motherboard.setTitle(((String) json.get("name")).replace("Материнская плата ", ""));
             motherboard.setSocket(attributes.get("Socket").toUpperCase());
             
             List<Map<String, Object>> images = (List<Map<String, Object>>) json.get("images");
             if (images.size() > 0) {
                 motherboard.setImages(images.stream().map(img -> "https://static.eldorado.ru" + img.get("url")).collect(Collectors.toList()));
             }
-            motherboard.setPrice(Double.parseDouble(((String) json.get("price"))));
+            motherboard.setPrice(((double) json.get("price")));
+            motherboard.setOtherSpecifications(
+                attributes
+            );
+            return motherboard;
+        });
+    
+        registerParser(ProductType.VIDEOCARD, (json) -> {
+            VideoCard motherboard = new VideoCard();
+            if (json == null) {
+                return null;
+            }
+        
+            Map<String, String> attributes = ((List<Map<String, Object>>) json.get("listingDescription"))
+                .stream()
+                .map(map -> ((Map<String, String>) map.get("attributeNameToValueMap")))
+                .toList()
+                .stream()
+                .reduce(new HashMap<>(), (map1, map2) -> {
+                    map1.putAll(map2);
+                    return map1;
+                });
+        
+            motherboard.setTitle(((String) json.get("name")).replace("Видеокарта ", ""));
+        
+            List<Map<String, Object>> images = (List<Map<String, Object>>) json.get("images");
+            if (images.size() > 0) {
+                motherboard.setImages(images.stream().map(img -> "https://static.eldorado.ru" + img.get("url")).collect(Collectors.toList()));
+            }
+            motherboard.setPrice(((double) json.get("price")));
+            motherboard.setOtherSpecifications(
+                attributes
+            );
+            return motherboard;
+        });
+    
+        registerParser(ProductType.MEMORY, (json) -> {
+            Memory motherboard = new Memory();
+            if (json == null) {
+                return null;
+            }
+        
+            Map<String, String> attributes = ((List<Map<String, Object>>) json.get("listingDescription"))
+                .stream()
+                .map(map -> ((Map<String, String>) map.get("attributeNameToValueMap")))
+                .toList()
+                .stream()
+                .reduce(new HashMap<>(), (map1, map2) -> {
+                    map1.putAll(map2);
+                    return map1;
+                });
+        
+            motherboard.setTitle(((String) json.get("name")).replace("Оперативная память ", ""));
+        
+            List<Map<String, Object>> images = (List<Map<String, Object>>) json.get("images");
+            if (images.size() > 0) {
+                motherboard.setImages(images.stream().map(img -> "https://static.eldorado.ru" + img.get("url")).collect(Collectors.toList()));
+            }
+            motherboard.setPrice(((double) json.get("price")));
+            motherboard.setOtherSpecifications(
+                attributes
+            );
+            return motherboard;
+        });
+    
+        registerParser(ProductType.STORAGE, (json) -> {
+            Storage motherboard = new Storage();
+            if (json == null) {
+                return null;
+            }
+        
+            Map<String, String> attributes = ((List<Map<String, Object>>) json.get("listingDescription"))
+                .stream()
+                .map(map -> ((Map<String, String>) map.get("attributeNameToValueMap")))
+                .toList()
+                .stream()
+                .reduce(new HashMap<>(), (map1, map2) -> {
+                    map1.putAll(map2);
+                    return map1;
+                });
+        
+            motherboard.setTitle(((String) json.get("name")).replace("SSD накопитель ", ""));
+        
+            List<Map<String, Object>> images = (List<Map<String, Object>>) json.get("images");
+            if (images.size() > 0) {
+                motherboard.setImages(images.stream().map(img -> "https://static.eldorado.ru" + img.get("url")).collect(Collectors.toList()));
+            }
+            motherboard.setPrice(((double) json.get("price")));
+            motherboard.setOtherSpecifications(
+                attributes
+            );
+            return motherboard;
+        });
+    
+        registerParser(ProductType.POWERSUPPLY, (json) -> {
+            PowerSupply motherboard = new PowerSupply();
+            if (json == null) {
+                return null;
+            }
+        
+            Map<String, String> attributes = ((List<Map<String, Object>>) json.get("listingDescription"))
+                .stream()
+                .map(map -> ((Map<String, String>) map.get("attributeNameToValueMap")))
+                .toList()
+                .stream()
+                .reduce(new HashMap<>(), (map1, map2) -> {
+                    map1.putAll(map2);
+                    return map1;
+                });
+        
+            motherboard.setTitle(((String) json.get("name")).replace("SSD накопитель ", ""));
+        
+            List<Map<String, Object>> images = (List<Map<String, Object>>) json.get("images");
+            if (images.size() > 0) {
+                motherboard.setImages(images.stream().map(img -> "https://static.eldorado.ru" + img.get("url")).collect(Collectors.toList()));
+            }
+            motherboard.setPrice(((double) json.get("price")));
+            motherboard.setOtherSpecifications(
+                attributes
+            );
+            return motherboard;
+        });
+    
+        registerParser(ProductType.COMPUTERCASE, (json) -> {
+            ComputerCase motherboard = new ComputerCase();
+            if (json == null) {
+                return null;
+            }
+        
+            Map<String, String> attributes = ((List<Map<String, Object>>) json.get("listingDescription"))
+                .stream()
+                .map(map -> ((Map<String, String>) map.get("attributeNameToValueMap")))
+                .toList()
+                .stream()
+                .reduce(new HashMap<>(), (map1, map2) -> {
+                    map1.putAll(map2);
+                    return map1;
+                });
+        
+            motherboard.setTitle(((String) json.get("name")).replace("Корпус для компьютера ", ""));
+        
+            List<Map<String, Object>> images = (List<Map<String, Object>>) json.get("images");
+            if (images.size() > 0) {
+                motherboard.setImages(images.stream().map(img -> "https://static.eldorado.ru" + img.get("url")).collect(Collectors.toList()));
+            }
+            motherboard.setPrice(((double) json.get("price")));
             motherboard.setOtherSpecifications(
                 attributes
             );

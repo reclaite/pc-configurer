@@ -2,15 +2,28 @@ import React, {useEffect, useRef, useState} from "react";
 import OuterContainer from "../../layout/OuterContainer";
 import {clearUser, ConfigurationType, getUser, ProductType} from "../../lib/PcApp";
 import PurposeCard from "../../layout/PurposeCard";
-import {fetchGet} from "../../lib/api";
+import {fetchGet, fetchPost} from "../../lib/api";
 import SelectedCard from "../../layout/SelectedCard";
-import {randomInt} from "crypto";
+import {Product} from "../../lib/Model";
+import {useNavigate} from "react-router-dom";
 
-interface CompleteBuild {
+export interface CompleteBuild {
     id: string,
     title: string,
     configurationType: ConfigurationType,
     products: Map<ProductType, number>
+}
+
+function id(length: number) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter += 1;
+    }
+    return result;
 }
 
 const BuildPage: React.FC = () => {
@@ -19,8 +32,10 @@ const BuildPage: React.FC = () => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [configurationTypes, setConfigurationTypes] = useState([]);
 
+    const navigate = useNavigate();
+
     const [saveConfig, setSaveConfig] = useState<boolean>(false);
-    const [showUrl, setShowUrl] = useState<boolean>(false);
+    const [url, setUrl] = useState<string>("-");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -77,20 +92,33 @@ const BuildPage: React.FC = () => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault(); // Предотвращает обновление страницы при отправке формы
 
-        // const completeBuild: CompleteBuild = {
-        //     id: "id",
-        //     title: name,
-        //     configurationType: configurationType,
-        //     products,
-        // };
-        //
-        // try {
-        //     const response = await fetchPost('/build/save', completeBuild);
-        //     navigate("/config/" + id);
-        //     console.log(response.data); // Обработка успешного ответа сервера
-        // } catch (error) {
-        //     console.error(error); // Обработка ошибок
-        // }
+        const productIds: Map<ProductType, number> = new Map<ProductType, number>();
+
+        for (let key in user.selected) {
+            if (user.selected.hasOwnProperty(key)) {
+                const productType: ProductType = key as ProductType;
+                const product: Product = user.selected[key];
+                productIds.set(productType, product.id);
+            }
+        }
+
+        let urlId = id(12);
+
+        const completeBuild: CompleteBuild = {
+            id: urlId,
+            title: title,
+            configurationType: user.configurationType,
+            products: productIds,
+        };
+
+        try {
+            const response = await fetchPost('/build/save', completeBuild);
+            setUrl(urlId);
+            navigate("/config/" + urlId);
+            console.log(response.data); // Обработка успешного ответа сервера
+        } catch (error) {
+            console.error(error); // Обработка ошибок
+        }
     };
 
     return (
@@ -136,7 +164,7 @@ const BuildPage: React.FC = () => {
                         </>
                     }
                     {
-                        showUrl ?
+                        url !== "-" ?
                             <>
                                 <div className="card card-body mt-4 w-50 mx-auto">
                                     <p><b>Конфигурация успешно сохранена!</b> Вы можете поделиться ей с другими по
@@ -145,7 +173,7 @@ const BuildPage: React.FC = () => {
                                     <hr className="my-1"></hr>
                                     <div className="input-group mt-3">
                                         <input type="text" className="form-control" id="myInput" ref={inputRef}
-                                               value="https://pcconfigurer.ru/config/8f56c9b214a9d6f78296e2daf6614fb5"
+                                               value={`https://pcconfigurer.ru/config/${url}`}
                                                readOnly/>
                                         <button className="btn btn-primary" type="button"
                                                 onClick={copyText}>Копировать

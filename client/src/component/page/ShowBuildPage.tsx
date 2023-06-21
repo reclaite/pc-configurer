@@ -1,10 +1,33 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import OuterContainer from "../../layout/OuterContainer";
+import {CompleteBuild} from "./BuildPage";
+import {useParams} from "react-router-dom";
+import {fetchGet} from "../../lib/api";
+
+interface BuildProps {
+    build: CompleteBuild
+}
 
 const ShowBuildPage: React.FC = () => {
+    const {id} = useParams();
+    const [build, setBuild] = useState<CompleteBuild>();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetchGet(`/build/${id}`);
+                setBuild(response.data);
+            } catch (error) {
+
+            }
+        }
+
+        fetchData();
+    });
+
     return (
         <OuterContainer>
-            <h1>Игровая конфигурация персонального компьютера</h1>
+            <h1>{build?.title}</h1>
             <p>Итоговая стоимость: <b>52843 ₽</b></p>
             <hr className="my-4"></hr>
             <div key="1" className="w-100 d-flex flex-wrap justify-content-center gap-2 col-lg-1 mb-4">

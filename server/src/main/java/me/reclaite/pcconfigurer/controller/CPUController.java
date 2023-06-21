@@ -38,6 +38,9 @@ public class CPUController {
         List<Product> products = componentService.getSelectedProducts(userInfo.getSelected());
         return cpuService.getCpuRepository().findAll().stream().filter(
             cpu -> {
+                if (userInfo.getConfigurationType().getName() != cpu.getConfigurationType()) {
+                    return false;
+                }
                 for (Product product : products) {
                     if (!product.isCompatible(userInfo, cpu)) {
                         return false;
